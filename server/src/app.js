@@ -15,6 +15,8 @@ import ipPlugin from "./plugins/ip.js";
 import healthRoutes from "./routes/health.routes.js";
 import guestRoutes from "./routes/guest.routes.js";
 import videoRoutes from "./routes/video.routes.js";
+import stripeRoutes from "./routes/stripe.routes.js";
+import couponRoutes from "./routes/coupon.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -82,10 +84,10 @@ export async function buildApp() {
   await app.register(healthRoutes, { prefix: "/health" });
   await app.register(guestRoutes, { prefix: "/guest" });
   await app.register(videoRoutes, { prefix: "/videos" });
+  await app.register(stripeRoutes, { prefix: "/stripe" });
+  await app.register(couponRoutes, { prefix: "/coupons" });
 
-  // Step 3+: more routes will be registered here
-  // await app.register(stripeRoutes, { prefix: '/stripe' });
-  // await app.register(couponRoutes, { prefix: '/coupons' });
+  // Step 4+: more routes will be registered here
   // await app.register(adminRoutes,  { prefix: '/admin' });
   // await app.register(emailRoutes,  { prefix: '/admin/emails' });
 
