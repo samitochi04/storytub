@@ -17,6 +17,8 @@ import guestRoutes from "./routes/guest.routes.js";
 import videoRoutes from "./routes/video.routes.js";
 import stripeRoutes from "./routes/stripe.routes.js";
 import couponRoutes from "./routes/coupon.routes.js";
+import emailRoutes from "./routes/email.routes.js";
+import adminRoutes from "./routes/admin.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -86,10 +88,10 @@ export async function buildApp() {
   await app.register(videoRoutes, { prefix: "/videos" });
   await app.register(stripeRoutes, { prefix: "/stripe" });
   await app.register(couponRoutes, { prefix: "/coupons" });
+  await app.register(emailRoutes, { prefix: "/admin/emails" });
+  await app.register(adminRoutes, { prefix: "/admin" });
 
-  // Step 4+: more routes will be registered here
-  // await app.register(adminRoutes,  { prefix: '/admin' });
-  // await app.register(emailRoutes,  { prefix: '/admin/emails' });
+  // Additional admin slices can be registered here
 
   // ── Global error handler ──────────────────────────────────────
   app.setErrorHandler((error, request, reply) => {

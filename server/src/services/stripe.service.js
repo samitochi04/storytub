@@ -4,6 +4,7 @@ import supabase from "../config/supabase.js";
 import logger from "../lib/logger.js";
 import { Errors } from "../lib/errors.js";
 import { addCredits } from "./credit.service.js";
+import { queueTemplateEmail } from "./email.service.js";
 
 const PLAN_PRICE_IDS = {
   starter: {
@@ -31,6 +32,47 @@ const PLAN_LEVELS = {
 
 function toIso(unixSeconds) {
   return unixSeconds ? new Date(unixSeconds * 1000).toISOString() : null;
+}
+
+function formatPlanName(planId) {
+  if (!planId) return "Free";
+  return planId.charAt(0).toUpperCase() + planId.slice(1);
+}
+
+function formatBundleName(bundleId) {
+  if (!bundleId) return "Credits";
+  return bundleId
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+function formatCurrency(cents, currency = "usd") {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: currency.toUpperCase(),
+  }).format((cents || 0) / 100);
+}
+
+async function queueBillingEmail(
+  userId,
+  templateId,
+  variables = {},
+  metadata = {},
+) {
+  try {
+    await queueTemplateEmail({
+      userId,
+      templateId,
+      variables,
+      metadata,
+    });
+  } catch (error) {
+    logger.error(
+      { error, userId, templateId },
+      "Failed to queue billing email",
+    );
+  }
 }
 
 function normalizeSubscriptionStatus(stripeStatus, pauseCollection) {
@@ -519,6 +561,20 @@ async function handleCheckoutCompleted(event, session) {
       metadata: session.metadata,
     });
 
+    await queueBillingEmail(
+      userId,
+      "bundle_purchased",
+      {
+        bundle_name: formatBundleName(bundleId),
+        credits_added: bundle.credits,
+        amount_paid: formatCurrency(
+          session.amount_total ?? 0,
+          session.currency || "usd",
+        ),
+      },
+      { stripe_event_id: event.id },
+    );
+
     return;
   }
 
@@ -563,7 +619,7 @@ async function handleCheckoutCompleted(event, session) {
     subscription_status: status,
   });
 
-  await grantSubscriptionCredits(
+  const plan = await grantSubscriptionCredits(
     userId,
     planId,
     stripeSubscriptionId,
@@ -601,6 +657,18 @@ async function handleCheckoutCompleted(event, session) {
     currency: session.currency || "usd",
     metadata: session.metadata,
   });
+
+  await queueBillingEmail(
+    userId,
+    "subscription_started",
+    {
+      plan_name: formatPlanName(planId),
+      credits_added: plan.credits_monthly,
+      next_billing_date:
+        toIso(subscription.current_period_end) || "your next billing date",
+    },
+    { stripe_event_id: event.id },
+  );
 }
 
 async function handleInvoicePaymentSucceeded(event, invoice) {
@@ -653,7 +721,7 @@ async function handleInvoicePaymentSucceeded(event, invoice) {
     subscription_status: status,
   });
 
-  await grantSubscriptionCredits(
+  const plan = await grantSubscriptionCredits(
     user.id,
     planId,
     invoice.id,
@@ -696,6 +764,22 @@ async function handleInvoicePaymentSucceeded(event, invoice) {
     currency: invoice.currency || "usd",
     metadata: { stripe_invoice_id: invoice.id },
   });
+
+  await queueBillingEmail(
+    user.id,
+    "subscription_renewed",
+    {
+      plan_name: formatPlanName(planId),
+      credits_added: plan.credits_monthly,
+      amount_paid: formatCurrency(
+        invoice.amount_paid ?? invoice.amount_due ?? 0,
+        invoice.currency || "usd",
+      ),
+      next_billing_date:
+        toIso(subscription?.current_period_end) || "your next billing date",
+    },
+    { stripe_event_id: event.id, stripe_invoice_id: invoice.id },
+  );
 }
 
 async function handleInvoicePaymentFailed(event, invoice) {
@@ -768,6 +852,19 @@ async function handleInvoicePaymentFailed(event, invoice) {
     currency: invoice.currency || "usd",
     metadata: { stripe_invoice_id: invoice.id },
   });
+
+  await queueBillingEmail(
+    user.id,
+    "subscription_payment_failed",
+    {
+      plan_name: formatPlanName(planId || user.subscription_plan || "free"),
+      amount_due: formatCurrency(
+        invoice.amount_due ?? 0,
+        invoice.currency || "usd",
+      ),
+    },
+    { stripe_event_id: event.id, stripe_invoice_id: invoice.id },
+  );
 }
 
 async function handleSubscriptionUpdated(event, subscription) {
@@ -865,6 +962,21 @@ async function handleSubscriptionDeleted(event, subscription) {
     currency: "usd",
     metadata: { stripe_subscription_id: subscription.id },
   });
+
+  await queueBillingEmail(
+    user.id,
+    "subscription_canceled",
+    {
+      plan_name: formatPlanName(
+        subscriptionState.previousPlan || user.subscription_plan || "free",
+      ),
+      end_date:
+        toIso(subscription.current_period_end) ||
+        toIso(subscription.canceled_at) ||
+        new Date().toISOString(),
+    },
+    { stripe_event_id: event.id, stripe_subscription_id: subscription.id },
+  );
 }
 
 export async function handleStripeWebhook(event) {

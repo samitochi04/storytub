@@ -6,6 +6,7 @@ import { generateAllSceneAudio } from "./tts.service.js";
 import { extractAllTimestamps } from "./whisper.service.js";
 import { renderVideo, uploadToStorage } from "./render.service.js";
 import { refundCredits } from "./credit.service.js";
+import { queueTemplateEmail } from "./email.service.js";
 
 /**
  * Update video status in DB.
@@ -92,6 +93,25 @@ export async function runPipeline(video) {
       duration_seconds: rendered.durationSeconds,
       file_size_bytes: rendered.fileSizeBytes,
     });
+
+    if (userId) {
+      try {
+        await queueTemplateEmail({
+          userId,
+          templateId: "video_ready",
+          emailType: "notification",
+          variables: {
+            video_title: video.title,
+            video_url: videoUrl,
+          },
+        });
+      } catch (emailError) {
+        logger.error(
+          { err: emailError, videoId, userId },
+          "Failed to queue video-ready email",
+        );
+      }
+    }
 
     logger.info({ videoId }, "Video pipeline completed");
   } catch (err) {
