@@ -1,13 +1,62 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>client</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Default SEO (overridden per-page by react-helmet-async) -->
+    <title>StoryTub - AI Video Generator</title>
+    <meta
+      name="description"
+      content="Create viral short videos automatically with AI. Generate scripts, voiceovers, and captions in French and English."
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="StoryTub" />
+    <meta property="og:title" content="StoryTub - AI Video Generator" />
+    <meta
+      property="og:description"
+      content="Create viral short videos automatically with AI. Generate scripts, voiceovers, and captions in French and English."
+    />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="StoryTub - AI Video Generator" />
+    <meta
+      name="twitter:description"
+      content="Create viral short videos automatically with AI."
+    />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Preconnect to external services -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Organization structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "StoryTub",
+        "url": "https://storytub.com",
+        "logo": "https://storytub.com/favicon.svg",
+        "description": "AI-powered viral video generator"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <p style="padding: 2rem; text-align: center; font-family: sans-serif">
+        StoryTub requires JavaScript to run. Please enable JavaScript in your
+        browser.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

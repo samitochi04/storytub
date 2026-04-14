@@ -1,121 +1,277 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  Input,
+  Textarea,
+  Badge,
+  Avatar,
+  Modal,
+  Toast,
+  Spinner,
+  Skeleton,
+  SkeletonText,
+  ProgressBar,
+  Select,
+} from "@/components/ui";
+import Logo, { LogoMark, LogoIcon } from "@/components/shared/Logo";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [modalOpen, setModalOpen] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [selectVal, setSelectVal] = useState("");
+  const [dark, setDark] = useState(false);
+
+  const toggleDark = () => {
+    setDark(!dark);
+    document.documentElement.classList.toggle("dark");
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="min-h-screen bg-[var(--color-bg-page)] p-8 transition-colors duration-150">
+      <div className="max-w-[700px] mx-auto flex flex-col gap-12">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <Logo size={36} />
+          <Button variant="secondary" size="sm" onClick={toggleDark}>
+            {dark ? "Light Mode" : "Dark Mode"}
+          </Button>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+        {/* Logo Variants */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Logo Variants
+          </h2>
+          <div className="flex items-center gap-8">
+            <LogoMark size={50} />
+            <LogoIcon size={40} />
+            <Logo size={32} showText />
+          </div>
+        </section>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {/* Buttons */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Buttons
+          </h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button variant="primary" size="sm">
+              Primary SM
+            </Button>
+            <Button variant="primary">Primary MD</Button>
+            <Button variant="primary" size="lg">
+              Primary LG
+            </Button>
+            <Button variant="secondary">Secondary</Button>
+            <Button variant="ghost">Ghost</Button>
+            <Button variant="danger">Danger</Button>
+            <Button disabled>Disabled</Button>
+          </div>
+        </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {/* Badges */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Badges
+          </h2>
+          <div className="flex flex-wrap items-center gap-3">
+            <Badge>Default</Badge>
+            <Badge variant="brand">Brand</Badge>
+            <Badge variant="success">Success</Badge>
+            <Badge variant="warning">Warning</Badge>
+            <Badge variant="error">Error</Badge>
+            <Badge variant="outline">Outline</Badge>
+          </div>
+        </section>
+
+        {/* Avatars */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Avatars
+          </h2>
+          <div className="flex items-center gap-3">
+            <Avatar size="sm" name="John Doe" />
+            <Avatar size="md" name="Jane Smith" />
+            <Avatar size="lg" />
+            <Avatar size="xl" name="A" />
+          </div>
+        </section>
+
+        {/* Inputs */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Inputs
+          </h2>
+          <Input label="Email" placeholder="you@example.com" />
+          <Input
+            label="With Error"
+            placeholder="Enter value..."
+            error="This field is required"
+          />
+          <Textarea label="Message" placeholder="Type your message..." />
+        </section>
+
+        {/* Select */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Select
+          </h2>
+          <Select
+            label="Language"
+            placeholder="Choose language..."
+            value={selectVal}
+            onChange={setSelectVal}
+            options={[
+              { value: "en", label: "English" },
+              { value: "fr", label: "French" },
+            ]}
+          />
+        </section>
+
+        {/* Cards */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Cards
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            <Card>
+              <p className="text-[12px] text-[var(--color-text-secondary)]">
+                Static card
+              </p>
+            </Card>
+            <Card hover>
+              <p className="text-[12px] text-[var(--color-text-secondary)]">
+                Hover card
+              </p>
+            </Card>
+          </div>
+        </section>
+
+        {/* Progress */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Progress
+          </h2>
+          <ProgressBar value={35} label="Credits used" showLabel />
+          <ProgressBar value={80} size="lg" />
+        </section>
+
+        {/* Skeleton */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Skeleton
+          </h2>
+          <Skeleton height="40px" />
+          <SkeletonText lines={3} />
+        </section>
+
+        {/* Spinner */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Spinner
+          </h2>
+          <div className="flex items-center gap-4">
+            <Spinner size={16} />
+            <Spinner size={24} />
+            <Spinner size={32} />
+          </div>
+        </section>
+
+        {/* Toast triggers */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Toasts
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                setToast({
+                  type: "success",
+                  message: "Video generated successfully!",
+                })
+              }
+            >
+              Success
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                setToast({
+                  type: "error",
+                  message: "Generation failed. Please try again.",
+                })
+              }
+            >
+              Error
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                setToast({ type: "warning", message: "Low credits remaining." })
+              }
+            >
+              Warning
+            </Button>
+            <Button
+              size="sm"
+              variant="secondary"
+              onClick={() =>
+                setToast({
+                  type: "info",
+                  message: "Your video is being processed.",
+                })
+              }
+            >
+              Info
+            </Button>
+          </div>
+          {toast && (
+            <Toast
+              type={toast.type}
+              message={toast.message}
+              onClose={() => setToast(null)}
+            />
+          )}
+        </section>
+
+        {/* Modal trigger */}
+        <section className="flex flex-col gap-4">
+          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
+            Modal
+          </h2>
+          <Button variant="secondary" onClick={() => setModalOpen(true)}>
+            Open Modal
+          </Button>
+          <Modal
+            isOpen={modalOpen}
+            onClose={() => setModalOpen(false)}
+            title="Confirm Action"
+          >
+            <p className="text-[12px] text-[var(--color-text-secondary)] mb-4">
+              Are you sure you want to proceed?
+            </p>
+            <div className="flex justify-end gap-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setModalOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button size="sm" onClick={() => setModalOpen(false)}>
+                Confirm
+              </Button>
+            </div>
+          </Modal>
+        </section>
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
