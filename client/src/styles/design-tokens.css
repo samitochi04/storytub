@@ -72,6 +72,8 @@
   --color-bg-hover: #1a1a1a;
 
   --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-text-tertiary: #666666;
 
   --color-border-default: rgba(255, 255, 255, 0.1);
   --color-border-hover: rgba(255, 255, 255, 0.2);

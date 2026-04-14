@@ -1,15 +1,18 @@
+import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/layout/SEOHead";
 
 export default function AdminEmailPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <SEOHead title="Admin Emails" noindex />
       <div>
         <h1 className="text-[24px] font-bold text-[var(--color-text-primary)]">
-          Email Campaigns
+          {t("adminPages.emailTitle")}
         </h1>
         <p className="mt-[var(--space-4)] text-[14px] text-[var(--color-text-secondary)]">
-          Email management coming in Step 9.
+          {t("adminPages.emailPlaceholder")}
         </p>
       </div>
     </>

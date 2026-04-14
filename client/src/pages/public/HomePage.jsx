@@ -1,6 +1,9 @@
+import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/layout/SEOHead";
 
 export default function HomePage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <SEOHead
@@ -18,10 +21,10 @@ export default function HomePage() {
       />
       <div className="mx-auto max-w-[1200px] px-[var(--space-4)] py-[var(--space-16)]">
         <h1 className="text-[24px] font-bold text-[var(--color-text-primary)]">
-          Create viral videos with AI
+          {t("pages.homeTitle")}
         </h1>
         <p className="mt-[var(--space-4)] text-[14px] text-[var(--color-text-secondary)]">
-          Homepage content coming in Step 8.
+          {t("pages.homePlaceholder")}
         </p>
       </div>
     </>

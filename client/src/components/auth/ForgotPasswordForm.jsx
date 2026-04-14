@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button, Input } from "@/components/ui";
 import useAuth from "@/hooks/useAuth";
 
@@ -9,13 +10,14 @@ export default function ForgotPasswordForm() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const { forgotPassword } = useAuth();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!email) {
-      setError("Please enter your email.");
+      setError(t("auth.enterEmail"));
       return;
     }
 
@@ -24,7 +26,7 @@ export default function ForgotPasswordForm() {
       await forgotPassword(email);
       setSuccess(true);
     } catch (err) {
-      setError(err.message || "Failed to send reset email.");
+      setError(err.message || t("auth.resetFailed"));
     } finally {
       setLoading(false);
     }
@@ -49,17 +51,17 @@ export default function ForgotPasswordForm() {
           </svg>
         </div>
         <h2 className="text-[18px] font-bold text-[var(--color-text-primary)]">
-          Check your email
+          {t("auth.checkEmail")}
         </h2>
         <p className="text-[13px] text-[var(--color-text-secondary)] max-w-[300px]">
-          We sent a password reset link to{" "}
+          {t("auth.resetLinkSent")}{" "}
           <strong className="text-[var(--color-text-primary)]">{email}</strong>.
         </p>
         <Link
           to="/login"
           className="text-[12px] text-[var(--color-brand-blue)] hover:underline mt-[var(--space-4)]"
         >
-          Back to login
+          {t("auth.backToLogin")}
         </Link>
       </div>
     );
@@ -68,7 +70,7 @@ export default function ForgotPasswordForm() {
   return (
     <div className="flex flex-col gap-[var(--space-6)]">
       <p className="text-[13px] text-[var(--color-text-secondary)] text-center">
-        Enter your email and we will send you a link to reset your password.
+        {t("auth.resetDescription")}
       </p>
 
       <form
@@ -76,9 +78,9 @@ export default function ForgotPasswordForm() {
         className="flex flex-col gap-[var(--space-4)]"
       >
         <Input
-          label="Email"
+          label={t("auth.email")}
           type="email"
-          placeholder="you@example.com"
+          placeholder={t("auth.emailPlaceholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
@@ -90,7 +92,7 @@ export default function ForgotPasswordForm() {
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Sending..." : "Send reset link"}
+          {loading ? t("auth.sending") : t("auth.sendResetLink")}
         </Button>
       </form>
 
@@ -98,7 +100,7 @@ export default function ForgotPasswordForm() {
         to="/login"
         className="text-[12px] text-[var(--color-text-secondary)] hover:text-[var(--color-brand-blue)] transition-colors duration-150 text-center"
       >
-        Back to login
+        {t("auth.backToLogin")}
       </Link>
     </div>
   );

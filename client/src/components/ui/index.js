@@ -10,3 +10,5 @@ export { default as Spinner } from "./Spinner";
 export { default as Skeleton, SkeletonText, SkeletonCard } from "./Skeleton";
 export { default as ProgressBar } from "./ProgressBar";
 export { default as Select } from "./Select";
+export { default as LanguageSwitcher } from "./LanguageSwitcher";
+export { default as ThemeToggle } from "./ThemeToggle";

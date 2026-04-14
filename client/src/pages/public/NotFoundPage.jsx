@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/layout/SEOHead";
 import { Button } from "@/components/ui";
 
 export default function NotFoundPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <SEOHead title="Page Not Found" noindex />
@@ -11,13 +14,13 @@ export default function NotFoundPage() {
           404
         </p>
         <h1 className="text-[24px] font-bold text-[var(--color-text-primary)] mt-[var(--space-4)]">
-          Page not found
+          {t("pages.notFoundTitle")}
         </h1>
         <p className="mt-[var(--space-3)] text-[14px] text-[var(--color-text-secondary)]">
-          The page you are looking for does not exist or has been moved.
+          {t("pages.notFoundDescription")}
         </p>
         <Link to="/" className="inline-block mt-[var(--space-6)]">
-          <Button variant="primary">Go home</Button>
+          <Button variant="primary">{t("pages.goHome")}</Button>
         </Link>
       </div>
     </>

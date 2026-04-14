@@ -1,15 +1,18 @@
+import { useTranslation } from "react-i18next";
 import SEOHead from "@/components/layout/SEOHead";
 
 export default function AdminBillingPage() {
+  const { t } = useTranslation();
+
   return (
     <>
       <SEOHead title="Admin Billing" noindex />
       <div>
         <h1 className="text-[24px] font-bold text-[var(--color-text-primary)]">
-          Billing Overview
+          {t("adminPages.billingTitle")}
         </h1>
         <p className="mt-[var(--space-4)] text-[14px] text-[var(--color-text-secondary)]">
-          Revenue and payments coming in Step 9.
+          {t("adminPages.billingPlaceholder")}
         </p>
       </div>
     </>

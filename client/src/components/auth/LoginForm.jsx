@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button, Input } from "@/components/ui";
 import useAuth from "@/hooks/useAuth";
 import OAuthButtons from "./OAuthButtons";
@@ -12,6 +13,7 @@ export default function LoginForm() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   const from = location.state?.from?.pathname || "/dashboard";
 
@@ -20,7 +22,7 @@ export default function LoginForm() {
     setError("");
 
     if (!email || !password) {
-      setError("Please fill in all fields.");
+      setError(t("auth.fillAllFields"));
       return;
     }
 
@@ -29,7 +31,7 @@ export default function LoginForm() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message || "Login failed. Please try again.");
+      setError(err.message || t("auth.loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -43,7 +45,7 @@ export default function LoginForm() {
       <div className="flex items-center gap-[var(--space-4)]">
         <div className="flex-1 h-px bg-[var(--color-border-default)]" />
         <span className="text-[11px] text-[var(--color-text-tertiary)]">
-          or
+          {t("auth.or")}
         </span>
         <div className="flex-1 h-px bg-[var(--color-border-default)]" />
       </div>
@@ -53,18 +55,18 @@ export default function LoginForm() {
         className="flex flex-col gap-[var(--space-4)]"
       >
         <Input
-          label="Email"
+          label={t("auth.email")}
           type="email"
-          placeholder="you@example.com"
+          placeholder={t("auth.emailPlaceholder")}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           autoComplete="email"
           required
         />
         <Input
-          label="Password"
+          label={t("auth.password")}
           type="password"
-          placeholder="Your password"
+          placeholder={t("auth.passwordPlaceholder")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="current-password"
@@ -76,7 +78,7 @@ export default function LoginForm() {
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Logging in..." : "Log in"}
+          {loading ? t("auth.loggingIn") : t("auth.login")}
         </Button>
       </form>
 
@@ -85,15 +87,15 @@ export default function LoginForm() {
           to="/forgot-password"
           className="text-[12px] text-[var(--color-text-secondary)] hover:text-[var(--color-brand-blue)] transition-colors duration-150"
         >
-          Forgot password?
+          {t("auth.forgotPassword")}
         </Link>
         <p className="text-[12px] text-[var(--color-text-secondary)]">
-          No account?{" "}
+          {t("auth.noAccount")}{" "}
           <Link
             to="/signup"
             className="text-[var(--color-brand-blue)] hover:underline"
           >
-            Sign up
+            {t("auth.signup")}
           </Link>
         </p>
       </div>

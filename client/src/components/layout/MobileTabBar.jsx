@@ -1,25 +1,24 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   Sparkles,
   Film,
   CreditCard,
-  Mic,
-  Bell,
-  HelpCircle,
-  Settings,
   User,
 } from "lucide-react";
 
 const MOBILE_ITEMS = [
-  { to: "/dashboard", icon: LayoutDashboard, label: "Home" },
-  { to: "/generate", icon: Sparkles, label: "Create" },
-  { to: "/videos", icon: Film, label: "Videos" },
-  { to: "/billing", icon: CreditCard, label: "Billing" },
-  { to: "/profile", icon: User, label: "Profile" },
+  { to: "/dashboard", icon: LayoutDashboard, key: "mobile.home" },
+  { to: "/generate", icon: Sparkles, key: "mobile.create" },
+  { to: "/videos", icon: Film, key: "mobile.videos" },
+  { to: "/billing", icon: CreditCard, key: "mobile.billing" },
+  { to: "/profile", icon: User, key: "mobile.profile" },
 ];
 
 export default function MobileTabBar() {
+  const { t } = useTranslation();
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-[var(--color-border-default)] bg-[var(--color-bg-card)] px-[var(--space-2)] py-[var(--space-2)] md:hidden">
       {MOBILE_ITEMS.map((item) => {
@@ -37,7 +36,7 @@ export default function MobileTabBar() {
             }
           >
             <Icon size={18} strokeWidth={1.5} strokeLinecap="round" />
-            <span>{item.label}</span>
+            <span>{t(item.key)}</span>
           </NavLink>
         );
       })}

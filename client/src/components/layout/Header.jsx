@@ -1,16 +1,18 @@
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Logo from "@/components/shared/Logo";
-import { Button } from "@/components/ui";
+import { Button, LanguageSwitcher, ThemeToggle } from "@/components/ui";
 
 const NAV_LINKS = [
-  { to: "/features", label: "Features" },
-  { to: "/pricing", label: "Pricing" },
-  { to: "/blog", label: "Blog" },
-  { to: "/about", label: "About" },
+  { to: "/features", key: "nav.features" },
+  { to: "/pricing", key: "nav.pricing" },
+  { to: "/blog", key: "nav.blog" },
+  { to: "/about", key: "nav.about" },
 ];
 
 export default function Header() {
   const { pathname } = useLocation();
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-bg-card)]/95 backdrop-blur-sm">
@@ -22,7 +24,7 @@ export default function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden items-center gap-[var(--space-6)] md:flex">
-          {NAV_LINKS.map(({ to, label }) => (
+          {NAV_LINKS.map(({ to, key }) => (
             <Link
               key={to}
               to={to}
@@ -32,21 +34,23 @@ export default function Header() {
                   : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
               }`}
             >
-              {label}
+              {t(key)}
             </Link>
           ))}
         </nav>
 
-        {/* Auth buttons */}
+        {/* Right section */}
         <div className="flex items-center gap-[var(--space-3)]">
+          <LanguageSwitcher />
+          <ThemeToggle />
           <Link to="/login">
             <Button variant="ghost" size="sm">
-              Log in
+              {t("nav.login")}
             </Button>
           </Link>
           <Link to="/signup">
             <Button variant="primary" size="sm">
-              Sign up
+              {t("nav.signup")}
             </Button>
           </Link>
         </div>

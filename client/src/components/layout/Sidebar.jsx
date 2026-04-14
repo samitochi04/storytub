@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
   Sparkles,
@@ -11,28 +12,30 @@ import {
   User,
 } from "lucide-react";
 import { LogoIcon } from "@/components/shared/Logo";
+import { ThemeToggle } from "@/components/ui";
 
 const NAV_ITEMS = [
-  { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
-  { to: "/generate", icon: Sparkles, label: "Generate" },
-  { to: "/videos", icon: Film, label: "Videos" },
-  { to: "/billing", icon: CreditCard, label: "Billing" },
-  { to: "/voices", icon: Mic, label: "Voices" },
-  { to: "/notifications", icon: Bell, label: "Notifications" },
-  { to: "/support", icon: HelpCircle, label: "Support" },
+  { to: "/dashboard", icon: LayoutDashboard, key: "sidebar.dashboard" },
+  { to: "/generate", icon: Sparkles, key: "sidebar.generate" },
+  { to: "/videos", icon: Film, key: "sidebar.videos" },
+  { to: "/billing", icon: CreditCard, key: "sidebar.billing" },
+  { to: "/voices", icon: Mic, key: "sidebar.voices" },
+  { to: "/notifications", icon: Bell, key: "sidebar.notifications" },
+  { to: "/support", icon: HelpCircle, key: "sidebar.support" },
 ];
 
 const BOTTOM_ITEMS = [
-  { to: "/settings", icon: Settings, label: "Settings" },
-  { to: "/profile", icon: User, label: "Profile" },
+  { to: "/settings", icon: Settings, key: "sidebar.settings" },
+  { to: "/profile", icon: User, key: "sidebar.profile" },
 ];
 
-function SidebarLink({ to, icon, label }) {
+function SidebarLink({ to, icon, labelKey }) {
   const Icon = icon;
+  const { t } = useTranslation();
   return (
     <NavLink
       to={to}
-      title={label}
+      title={t(labelKey)}
       className={({ isActive }) =>
         `flex items-center justify-center w-[32px] h-[32px] rounded-[var(--radius-md)] transition-all duration-150 ${
           isActive
@@ -63,14 +66,25 @@ export default function Sidebar() {
       {/* Main nav */}
       <nav className="flex flex-1 flex-col items-center gap-[var(--space-4)]">
         {NAV_ITEMS.map((item) => (
-          <SidebarLink key={item.to} {...item} />
+          <SidebarLink
+            key={item.to}
+            to={item.to}
+            icon={item.icon}
+            labelKey={item.key}
+          />
         ))}
       </nav>
 
       {/* Bottom nav */}
       <div className="flex flex-col items-center gap-[var(--space-4)]">
+        <ThemeToggle />
         {BOTTOM_ITEMS.map((item) => (
-          <SidebarLink key={item.to} {...item} />
+          <SidebarLink
+            key={item.to}
+            to={item.to}
+            icon={item.icon}
+            labelKey={item.key}
+          />
         ))}
       </div>
     </aside>

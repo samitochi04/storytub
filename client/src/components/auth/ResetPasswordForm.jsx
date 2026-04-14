@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Button, Input } from "@/components/ui";
 import useAuth from "@/hooks/useAuth";
 
@@ -10,23 +11,24 @@ export default function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
   const { resetPassword } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
     if (!password || !confirm) {
-      setError("Please fill in both fields.");
+      setError(t("auth.fillBothFields"));
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+      setError(t("auth.passwordMin"));
       return;
     }
 
     if (password !== confirm) {
-      setError("Passwords do not match.");
+      setError(t("auth.passwordsMismatch"));
       return;
     }
 
@@ -35,7 +37,7 @@ export default function ResetPasswordForm() {
       await resetPassword(password);
       navigate("/dashboard", { replace: true });
     } catch (err) {
-      setError(err.message || "Failed to reset password.");
+      setError(err.message || t("auth.resetPasswordFailed"));
     } finally {
       setLoading(false);
     }
@@ -44,7 +46,7 @@ export default function ResetPasswordForm() {
   return (
     <div className="flex flex-col gap-[var(--space-6)]">
       <p className="text-[13px] text-[var(--color-text-secondary)] text-center">
-        Enter your new password below.
+        {t("auth.newPasswordDescription")}
       </p>
 
       <form
@@ -52,18 +54,18 @@ export default function ResetPasswordForm() {
         className="flex flex-col gap-[var(--space-4)]"
       >
         <Input
-          label="New password"
+          label={t("auth.newPassword")}
           type="password"
-          placeholder="At least 8 characters"
+          placeholder={t("auth.passwordMinPlaceholder")}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           autoComplete="new-password"
           required
         />
         <Input
-          label="Confirm password"
+          label={t("auth.confirmPassword")}
           type="password"
-          placeholder="Re-enter your password"
+          placeholder={t("auth.confirmPlaceholder")}
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           autoComplete="new-password"
@@ -75,7 +77,7 @@ export default function ResetPasswordForm() {
         )}
 
         <Button type="submit" className="w-full" disabled={loading}>
-          {loading ? "Updating..." : "Set new password"}
+          {loading ? t("auth.updating") : t("auth.setNewPassword")}
         </Button>
       </form>
     </div>
