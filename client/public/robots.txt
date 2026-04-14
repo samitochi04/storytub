@@ -1,0 +1,14 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /generate/
+Disallow: /videos/
+Disallow: /profile/
+Disallow: /settings/
+Disallow: /billing/
+Disallow: /voices/
+Disallow: /notifications/
+Disallow: /support/
+Disallow: /admin/
+Disallow: /api/
+Allow: /
+Sitemap: https://storytub.com/sitemap.xml

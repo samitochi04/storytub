@@ -1,277 +1,271 @@
-import { useState } from "react";
-import {
-  Button,
-  Card,
-  Input,
-  Textarea,
-  Badge,
-  Avatar,
-  Modal,
-  Toast,
-  Spinner,
-  Skeleton,
-  SkeletonText,
-  ProgressBar,
-  Select,
-} from "@/components/ui";
-import Logo, { LogoMark, LogoIcon } from "@/components/shared/Logo";
+import { Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import { Spinner } from "@/components/ui";
+import { PublicLayout, AppShell, AdminLayout } from "@/components/layout";
+import { ProtectedRoute, StaffRoute } from "@/components/auth";
 
-function App() {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [toast, setToast] = useState(null);
-  const [selectVal, setSelectVal] = useState("");
-  const [dark, setDark] = useState(false);
+// ---- Public pages ----
+import HomePage from "@/pages/public/HomePage";
+import FeaturesPage from "@/pages/public/FeaturesPage";
+import PricingPage from "@/pages/public/PricingPage";
+import AboutPage from "@/pages/public/AboutPage";
+import BlogIndexPage from "@/pages/public/BlogIndexPage";
+import BlogPostPage from "@/pages/public/BlogPostPage";
+import ContactPage from "@/pages/public/ContactPage";
+import LoginPage from "@/pages/public/LoginPage";
+import SignupPage from "@/pages/public/SignupPage";
+import ForgotPasswordPage from "@/pages/public/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/public/ResetPasswordPage";
+import TermsPage from "@/pages/public/TermsPage";
+import PrivacyPage from "@/pages/public/PrivacyPage";
+import NotFoundPage from "@/pages/public/NotFoundPage";
 
-  const toggleDark = () => {
-    setDark(!dark);
-    document.documentElement.classList.toggle("dark");
-  };
+// ---- App pages (lazy loaded) ----
+const DashboardPage = lazy(() => import("@/pages/app/DashboardPage"));
+const GeneratePage = lazy(() => import("@/pages/app/GeneratePage"));
+const VideosPage = lazy(() => import("@/pages/app/VideosPage"));
+const VideoDetailPage = lazy(() => import("@/pages/app/VideoDetailPage"));
+const ProfilePage = lazy(() => import("@/pages/app/ProfilePage"));
+const SettingsPage = lazy(() => import("@/pages/app/SettingsPage"));
+const BillingPage = lazy(() => import("@/pages/app/BillingPage"));
+const VoicesPage = lazy(() => import("@/pages/app/VoicesPage"));
+const NotificationsPage = lazy(() => import("@/pages/app/NotificationsPage"));
+const SupportPage = lazy(() => import("@/pages/app/SupportPage"));
 
+// ---- Admin pages (lazy loaded) ----
+const AdminDashboardPage = lazy(
+  () => import("@/pages/admin/AdminDashboardPage"),
+);
+const AdminUsersPage = lazy(() => import("@/pages/admin/AdminUsersPage"));
+const AdminVideosPage = lazy(() => import("@/pages/admin/AdminVideosPage"));
+const AdminBlogPage = lazy(() => import("@/pages/admin/AdminBlogPage"));
+const AdminCouponsPage = lazy(() => import("@/pages/admin/AdminCouponsPage"));
+const AdminStaffPage = lazy(() => import("@/pages/admin/AdminStaffPage"));
+const AdminBillingPage = lazy(() => import("@/pages/admin/AdminBillingPage"));
+const AdminEmailPage = lazy(() => import("@/pages/admin/AdminEmailPage"));
+const AdminAnalyticsPage = lazy(
+  () => import("@/pages/admin/AdminAnalyticsPage"),
+);
+const AdminMonitoringPage = lazy(
+  () => import("@/pages/admin/AdminMonitoringPage"),
+);
+
+function LazyFallback() {
   return (
-    <div className="min-h-screen bg-[var(--color-bg-page)] p-8 transition-colors duration-150">
-      <div className="max-w-[700px] mx-auto flex flex-col gap-12">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <Logo size={36} />
-          <Button variant="secondary" size="sm" onClick={toggleDark}>
-            {dark ? "Light Mode" : "Dark Mode"}
-          </Button>
-        </div>
-
-        {/* Logo Variants */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Logo Variants
-          </h2>
-          <div className="flex items-center gap-8">
-            <LogoMark size={50} />
-            <LogoIcon size={40} />
-            <Logo size={32} showText />
-          </div>
-        </section>
-
-        {/* Buttons */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Buttons
-          </h2>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button variant="primary" size="sm">
-              Primary SM
-            </Button>
-            <Button variant="primary">Primary MD</Button>
-            <Button variant="primary" size="lg">
-              Primary LG
-            </Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="danger">Danger</Button>
-            <Button disabled>Disabled</Button>
-          </div>
-        </section>
-
-        {/* Badges */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Badges
-          </h2>
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge>Default</Badge>
-            <Badge variant="brand">Brand</Badge>
-            <Badge variant="success">Success</Badge>
-            <Badge variant="warning">Warning</Badge>
-            <Badge variant="error">Error</Badge>
-            <Badge variant="outline">Outline</Badge>
-          </div>
-        </section>
-
-        {/* Avatars */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Avatars
-          </h2>
-          <div className="flex items-center gap-3">
-            <Avatar size="sm" name="John Doe" />
-            <Avatar size="md" name="Jane Smith" />
-            <Avatar size="lg" />
-            <Avatar size="xl" name="A" />
-          </div>
-        </section>
-
-        {/* Inputs */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Inputs
-          </h2>
-          <Input label="Email" placeholder="you@example.com" />
-          <Input
-            label="With Error"
-            placeholder="Enter value..."
-            error="This field is required"
-          />
-          <Textarea label="Message" placeholder="Type your message..." />
-        </section>
-
-        {/* Select */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Select
-          </h2>
-          <Select
-            label="Language"
-            placeholder="Choose language..."
-            value={selectVal}
-            onChange={setSelectVal}
-            options={[
-              { value: "en", label: "English" },
-              { value: "fr", label: "French" },
-            ]}
-          />
-        </section>
-
-        {/* Cards */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Cards
-          </h2>
-          <div className="grid grid-cols-2 gap-3">
-            <Card>
-              <p className="text-[12px] text-[var(--color-text-secondary)]">
-                Static card
-              </p>
-            </Card>
-            <Card hover>
-              <p className="text-[12px] text-[var(--color-text-secondary)]">
-                Hover card
-              </p>
-            </Card>
-          </div>
-        </section>
-
-        {/* Progress */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Progress
-          </h2>
-          <ProgressBar value={35} label="Credits used" showLabel />
-          <ProgressBar value={80} size="lg" />
-        </section>
-
-        {/* Skeleton */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Skeleton
-          </h2>
-          <Skeleton height="40px" />
-          <SkeletonText lines={3} />
-        </section>
-
-        {/* Spinner */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Spinner
-          </h2>
-          <div className="flex items-center gap-4">
-            <Spinner size={16} />
-            <Spinner size={24} />
-            <Spinner size={32} />
-          </div>
-        </section>
-
-        {/* Toast triggers */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Toasts
-          </h2>
-          <div className="flex flex-wrap gap-2">
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() =>
-                setToast({
-                  type: "success",
-                  message: "Video generated successfully!",
-                })
-              }
-            >
-              Success
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() =>
-                setToast({
-                  type: "error",
-                  message: "Generation failed. Please try again.",
-                })
-              }
-            >
-              Error
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() =>
-                setToast({ type: "warning", message: "Low credits remaining." })
-              }
-            >
-              Warning
-            </Button>
-            <Button
-              size="sm"
-              variant="secondary"
-              onClick={() =>
-                setToast({
-                  type: "info",
-                  message: "Your video is being processed.",
-                })
-              }
-            >
-              Info
-            </Button>
-          </div>
-          {toast && (
-            <Toast
-              type={toast.type}
-              message={toast.message}
-              onClose={() => setToast(null)}
-            />
-          )}
-        </section>
-
-        {/* Modal trigger */}
-        <section className="flex flex-col gap-4">
-          <h2 className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            Modal
-          </h2>
-          <Button variant="secondary" onClick={() => setModalOpen(true)}>
-            Open Modal
-          </Button>
-          <Modal
-            isOpen={modalOpen}
-            onClose={() => setModalOpen(false)}
-            title="Confirm Action"
-          >
-            <p className="text-[12px] text-[var(--color-text-secondary)] mb-4">
-              Are you sure you want to proceed?
-            </p>
-            <div className="flex justify-end gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button size="sm" onClick={() => setModalOpen(false)}>
-                Confirm
-              </Button>
-            </div>
-          </Modal>
-        </section>
-      </div>
+    <div className="flex items-center justify-center min-h-[50vh]">
+      <Spinner size={28} />
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Routes>
+      {/* ========== Public routes (SEO indexed) ========== */}
+      <Route element={<PublicLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="features" element={<FeaturesPage />} />
+        <Route path="pricing" element={<PricingPage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="blog" element={<BlogIndexPage />} />
+        <Route path="blog/:slug" element={<BlogPostPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
+        <Route path="forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="reset-password" element={<ResetPasswordPage />} />
+        <Route path="terms" element={<TermsPage />} />
+        <Route path="privacy" element={<PrivacyPage />} />
+      </Route>
+
+      {/* ========== App routes (authenticated, noindex) ========== */}
+      <Route
+        element={
+          <ProtectedRoute>
+            <Suspense fallback={<LazyFallback />}>
+              <AppShell />
+            </Suspense>
+          </ProtectedRoute>
+        }
+      >
+        <Route
+          path="dashboard"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <DashboardPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="generate"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <GeneratePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="videos"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <VideosPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="videos/:id"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <VideoDetailPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <ProfilePage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="settings"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <SettingsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="billing"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <BillingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="voices"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <VoicesPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="notifications"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <NotificationsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="support"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <SupportPage />
+            </Suspense>
+          }
+        />
+      </Route>
+
+      {/* ========== Admin routes (staff only, noindex) ========== */}
+      <Route
+        element={
+          <StaffRoute>
+            <Suspense fallback={<LazyFallback />}>
+              <AdminLayout />
+            </Suspense>
+          </StaffRoute>
+        }
+      >
+        <Route
+          path="admin"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminDashboardPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/users"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminUsersPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/videos"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminVideosPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/blog"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminBlogPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/coupons"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminCouponsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/staff"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminStaffPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/billing"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminBillingPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/emails"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminEmailPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/analytics"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminAnalyticsPage />
+            </Suspense>
+          }
+        />
+        <Route
+          path="admin/monitoring"
+          element={
+            <Suspense fallback={<LazyFallback />}>
+              <AdminMonitoringPage />
+            </Suspense>
+          }
+        />
+      </Route>
+
+      {/* ========== 404 ========== */}
+      <Route path="*" element={<PublicLayout />}>
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  );
+}
