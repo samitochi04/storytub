@@ -1,12 +1,6 @@
 import { Navigate } from "react-router-dom";
-
-/**
- * Restricts access to staff members (agent, manager, admin).
- * Optional `minRole` prop can require a specific minimum role level.
- *
- * Role hierarchy: agent < manager < admin
- * Auth + profile store will be wired in Step 3.
- */
+import useAuthStore from "@/stores/authStore";
+import { Spinner } from "@/components/ui";
 
 const ROLE_LEVEL = {
   agent: 1,
@@ -15,31 +9,25 @@ const ROLE_LEVEL = {
 };
 
 export default function StaffRoute({ children, minRole = "agent" }) {
-  // Minimum required role level for this route
+  const { user, profile, loading } = useAuthStore();
   const requiredLevel = ROLE_LEVEL[minRole] || 1;
 
-  // Temporary: check for Supabase session + profile role
-  // Will be replaced by authStore in Step 3
-  const hasSession = (() => {
-    try {
-      const key = Object.keys(localStorage).find(
-        (k) => k.startsWith("sb-") && k.endsWith("-auth-token"),
-      );
-      if (!key) return false;
-      const data = JSON.parse(localStorage.getItem(key));
-      return !!data?.access_token;
-    } catch {
-      return false;
-    }
-  })();
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[var(--color-bg-page)]">
+        <Spinner size={28} />
+      </div>
+    );
+  }
 
-  if (!hasSession) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // TODO Step 3: Check profile.role level >= requiredLevel using authStore
-  // For now, allow access if authenticated (staff check comes with auth store)
-  void requiredLevel;
+  const userLevel = ROLE_LEVEL[profile?.role] || 0;
+  if (userLevel < requiredLevel) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return children;
 }

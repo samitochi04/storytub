@@ -1,31 +1,20 @@
 import { Navigate, useLocation } from "react-router-dom";
+import useAuthStore from "@/stores/authStore";
+import { Spinner } from "@/components/ui";
 
-/**
- * Redirects unauthenticated users to /login.
- * Wraps authenticated app routes.
- *
- * Auth store will be wired in Step 3. For now, checks
- * supabase session from localStorage as a temporary fallback.
- */
 export default function ProtectedRoute({ children }) {
   const location = useLocation();
+  const { user, loading } = useAuthStore();
 
-  // Temporary: check for Supabase session in localStorage
-  // Will be replaced by authStore.user in Step 3
-  const hasSession = (() => {
-    try {
-      const key = Object.keys(localStorage).find(
-        (k) => k.startsWith("sb-") && k.endsWith("-auth-token"),
-      );
-      if (!key) return false;
-      const data = JSON.parse(localStorage.getItem(key));
-      return !!data?.access_token;
-    } catch {
-      return false;
-    }
-  })();
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[var(--color-bg-page)]">
+        <Spinner size={28} />
+      </div>
+    );
+  }
 
-  if (!hasSession) {
+  if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 

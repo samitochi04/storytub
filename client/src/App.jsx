@@ -19,6 +19,7 @@ import ResetPasswordPage from "@/pages/public/ResetPasswordPage";
 import TermsPage from "@/pages/public/TermsPage";
 import PrivacyPage from "@/pages/public/PrivacyPage";
 import NotFoundPage from "@/pages/public/NotFoundPage";
+import AuthCallbackPage from "@/pages/public/AuthCallbackPage";
 
 // ---- App pages (lazy loaded) ----
 const DashboardPage = lazy(() => import("@/pages/app/DashboardPage"));
@@ -77,6 +78,9 @@ export default function App() {
         <Route path="terms" element={<TermsPage />} />
         <Route path="privacy" element={<PrivacyPage />} />
       </Route>
+
+      {/* ========== Auth callback (OAuth + email confirm) ========== */}
+      <Route path="auth/callback" element={<AuthCallbackPage />} />
 
       {/* ========== App routes (authenticated, noindex) ========== */}
       <Route

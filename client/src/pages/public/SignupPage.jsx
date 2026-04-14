@@ -1,4 +1,5 @@
 import SEOHead from "@/components/layout/SEOHead";
+import { SignupForm } from "@/components/auth";
 
 export default function SignupPage() {
   return (
@@ -8,12 +9,10 @@ export default function SignupPage() {
         description="Create your StoryTub account and start generating videos."
       />
       <div className="mx-auto max-w-[400px] px-[var(--space-4)] py-[var(--space-16)]">
-        <h1 className="text-[24px] font-bold text-[var(--color-text-primary)] text-center">
+        <h1 className="text-[24px] font-bold text-[var(--color-text-primary)] text-center mb-[var(--space-8)]">
           Sign up
         </h1>
-        <p className="mt-[var(--space-4)] text-[14px] text-[var(--color-text-secondary)] text-center">
-          Signup form coming in Step 3.
-        </p>
+        <SignupForm />
       </div>
     </>
   );
