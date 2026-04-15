@@ -36,23 +36,12 @@ export function LogoMark({ size = 40, className = "" }) {
 }
 
 export function LogoIcon({ size = 32, className = "" }) {
-  return (
-    <div
-      className={`
-        flex items-center justify-center
-        bg-black rounded-[var(--radius-md)]
-        ${className}
-      `}
-      style={{ width: size, height: size }}
-    >
-      <LogoMark size={size * 0.55} />
-    </div>
-  );
+  return <LogoMark size={size} className={className} />;
 }
 
 export default function Logo({ showText = true, size = 32, className = "" }) {
   return (
-    <div className={`flex items-center gap-[var(--space-6)] ${className}`}>
+    <div className={`flex items-center gap-[var(--space-2)] ${className}`}>
       <LogoIcon size={size} />
       {showText && (
         <span

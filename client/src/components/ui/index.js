@@ -12,3 +12,4 @@ export { default as ProgressBar } from "./ProgressBar";
 export { default as Select } from "./Select";
 export { default as LanguageSwitcher } from "./LanguageSwitcher";
 export { default as ThemeToggle } from "./ThemeToggle";
+export { default as ConfirmDialog } from "./ConfirmDialog";

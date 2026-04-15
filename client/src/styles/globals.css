@@ -128,3 +128,16 @@
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
 }
+
+/* ---- Scale up for laptop/desktop (15"+ screens) ---- */
+@media (min-width: 1280px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (min-width: 1536px) {
+  html {
+    font-size: 18px;
+  }
+}

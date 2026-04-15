@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Logo from "@/components/shared/Logo";
 import { Button, LanguageSwitcher, ThemeToggle } from "@/components/ui";
+import useAuthStore from "@/stores/authStore";
 
 const NAV_LINKS = [
   { to: "/features", key: "nav.features" },
@@ -13,6 +14,7 @@ const NAV_LINKS = [
 export default function Header() {
   const { pathname } = useLocation();
   const { t } = useTranslation();
+  const user = useAuthStore((s) => s.user);
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--color-border-default)] bg-[var(--color-bg-card)]/95 backdrop-blur-sm">
@@ -43,16 +45,26 @@ export default function Header() {
         <div className="flex items-center gap-[var(--space-3)]">
           <LanguageSwitcher />
           <ThemeToggle />
-          <Link to="/login">
-            <Button variant="ghost" size="sm">
-              {t("nav.login")}
-            </Button>
-          </Link>
-          <Link to="/signup">
-            <Button variant="primary" size="sm">
-              {t("nav.signup")}
-            </Button>
-          </Link>
+          {user ? (
+            <Link to="/dashboard">
+              <Button variant="primary" size="sm">
+                {t("nav.dashboard")}
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/login">
+                <Button variant="ghost" size="sm">
+                  {t("nav.login")}
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button variant="primary" size="sm">
+                  {t("nav.signup")}
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </header>

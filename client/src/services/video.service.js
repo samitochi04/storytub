@@ -46,11 +46,40 @@ export async function getVideo(id) {
 }
 
 /**
- * Get a signed download URL for a video.
+ * Get a fresh signed URL for a video_url stored in the DB.
+ */
+export async function getSignedVideoUrl(videoUrl) {
+  if (!videoUrl) return null;
+  const match = videoUrl.match(/\/videos\/(.+\.mp4)/);
+  if (!match) return null;
+  const storagePath = match[1].split("?")[0];
+  const { data, error } = await supabase.storage
+    .from("videos")
+    .createSignedUrl(storagePath, 3600);
+  if (error || !data?.signedUrl) return null;
+  return data.signedUrl;
+}
+
+/**
+ * Get a fresh signed download URL for a video.
  */
 export async function getDownloadUrl(id) {
   const video = await getVideo(id);
   if (!video?.video_url) throw new Error("Video not ready for download");
+
+  // Extract the storage path from the URL
+  // URL format: .../storage/v1/object/public/videos/userId/videoId.mp4 or signed variant
+  const match = video.video_url.match(/\/videos\/(.+\.mp4)/);
+  if (match) {
+    const storagePath = match[1].split("?")[0];
+    const { data, error } = await supabase.storage
+      .from("videos")
+      .createSignedUrl(storagePath, 3600);
+    if (!error && data?.signedUrl) {
+      return { url: data.signedUrl };
+    }
+  }
+
   return { url: video.video_url };
 }
 

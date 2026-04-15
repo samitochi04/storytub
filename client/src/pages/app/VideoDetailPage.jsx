@@ -13,11 +13,13 @@ import {
   Film,
 } from "lucide-react";
 import SEOHead from "@/components/layout/SEOHead";
-import { Button, Badge, Spinner } from "@/components/ui";
+import { Button, Badge, Spinner, ConfirmDialog } from "@/components/ui";
 import VideoStatus from "@/components/shared/VideoStatus";
+import VideoPlayer from "@/components/shared/VideoPlayer";
 import {
   getVideo,
   getDownloadUrl,
+  getSignedVideoUrl,
   deleteVideo,
   retryVideo,
 } from "@/services/video.service";
@@ -31,6 +33,7 @@ export default function VideoDetailPage() {
   const [error, setError] = useState(null);
   const [downloading, setDownloading] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -38,8 +41,14 @@ export default function VideoDetailPage() {
     let cancelled = false;
     setLoading(true);
     getVideo(id)
-      .then((data) => {
-        if (!cancelled) setVideo(data);
+      .then(async (data) => {
+        if (cancelled) return;
+        // Get a fresh signed URL for playback
+        if (data.video_url) {
+          const signedUrl = await getSignedVideoUrl(data.video_url);
+          if (signedUrl) data.video_url = signedUrl;
+        }
+        setVideo(data);
       })
       .catch((err) => {
         if (!cancelled) setError(err.message);
@@ -61,7 +70,19 @@ export default function VideoDetailPage() {
     setDownloading(true);
     try {
       const data = await getDownloadUrl(id);
-      window.open(data.url, "_blank");
+      const res = await fetch(data.url);
+      const blob = await res.blob();
+      const filename = (video.title || "storytub-video")
+        .replace(/[^a-zA-Z0-9_\- ]/g, "")
+        .replace(/\s+/g, "_")
+        .slice(0, 80);
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `${filename}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(a.href);
     } catch {
       // download error handled silently
     } finally {
@@ -81,13 +102,13 @@ export default function VideoDetailPage() {
   }
 
   async function handleDelete() {
-    if (!window.confirm(t("videoDetail.confirmDelete"))) return;
     setDeleting(true);
     try {
       await deleteVideo(id);
       navigate("/videos");
     } catch {
       setDeleting(false);
+      setShowDeleteConfirm(false);
     }
   }
 
@@ -158,14 +179,7 @@ export default function VideoDetailPage() {
         )}
 
         {isCompleted && video.video_url && (
-          <div className="overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-black shadow-[var(--shadow-md)]">
-            <video
-              src={video.video_url}
-              controls
-              className="aspect-[9/16] w-full max-h-[500px] object-contain"
-              poster={video.thumbnail_url}
-            />
-          </div>
+          <VideoPlayer src={video.video_url} poster={video.thumbnail_url} />
         )}
 
         {isCompleted && !video.video_url && (
@@ -222,7 +236,7 @@ export default function VideoDetailPage() {
             <Button
               variant="ghost"
               size="sm"
-              onClick={handleDelete}
+              onClick={() => setShowDeleteConfirm(true)}
               disabled={deleting}
               className="ml-auto text-[var(--color-error)]"
             >
@@ -272,6 +286,17 @@ export default function VideoDetailPage() {
           </div>
         )}
       </div>
+
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={handleDelete}
+        title={t("videoDetail.delete")}
+        message={t("videoDetail.confirmDelete")}
+        confirmLabel={t("videoDetail.delete")}
+        cancelLabel={t("videoDetail.cancel")}
+        loading={deleting}
+      />
     </>
   );
 }

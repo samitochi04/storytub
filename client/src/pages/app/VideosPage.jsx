@@ -37,10 +37,12 @@ export default function VideosPage() {
           <h1 className="text-[24px] font-bold text-[var(--color-text-primary)]">
             {t("videos.title")}
           </h1>
-          <Button as={Link} to="/generate" size="sm">
-            <Sparkles size={14} strokeWidth={1.5} />
-            {t("videos.newVideo")}
-          </Button>
+          <Link to="/generate">
+            <Button size="sm">
+              <Sparkles size={14} strokeWidth={1.5} />
+              {t("videos.newVideo")}
+            </Button>
+          </Link>
         </div>
         <VideoList videos={videos} loading={loading} />
       </div>

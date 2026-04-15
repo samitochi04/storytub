@@ -1,12 +1,14 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Globe, ChevronDown, Loader2 } from "lucide-react";
+import { ArrowRight, Globe, ChevronDown, Loader2, Clock } from "lucide-react";
 import {
   PROMPT_MAX_LENGTH,
   DEFAULT_VOICES,
   CONTENT_STYLES,
   VIDEO_DEFAULT_DURATION,
+  VIDEO_MIN_DURATION,
+  VIDEO_MAX_DURATION,
 } from "@/config/constants";
 import { generateVideo } from "@/services/video.service";
 import useAuthStore from "@/stores/authStore";
@@ -17,6 +19,7 @@ export default function PromptInput({ initialValue = "" }) {
   const profile = useAuthStore((s) => s.profile);
   const [value, setValue] = useState(initialValue);
   const [style, setStyle] = useState("");
+  const [duration, setDuration] = useState(VIDEO_DEFAULT_DURATION);
   const [styleOpen, setStyleOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -68,7 +71,7 @@ export default function PromptInput({ initialValue = "" }) {
         language: lang,
         templateId: "story_mode",
         voiceId: defaultVoice.id,
-        targetDuration: VIDEO_DEFAULT_DURATION,
+        targetDuration: duration,
       });
 
       navigate(`/videos/${data.video_id}`);
@@ -115,44 +118,67 @@ export default function PromptInput({ initialValue = "" }) {
         </p>
       )}
 
-      {/* Bottom row: style dropdown + counter + send */}
+      {/* Bottom row: style dropdown + duration + counter + send */}
       <div className="mt-[var(--space-6)] flex items-center justify-between">
-        <div className="relative" ref={dropdownRef}>
-          <button
-            type="button"
-            onClick={() => setStyleOpen(!styleOpen)}
-            className="flex items-center gap-[var(--space-1)] rounded-[var(--radius-md)] border border-[var(--color-border-default)] px-[var(--space-2)] py-[4px] text-[11px] text-[var(--color-text-secondary)] transition-colors duration-150 hover:bg-[var(--color-bg-hover)]"
-          >
-            {selectedStyleLabel}
-            <ChevronDown size={12} strokeWidth={1.5} />
-          </button>
-          {styleOpen && (
-            <div className="absolute bottom-full left-0 z-50 mb-[var(--space-1)] min-w-[160px] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-bg-card)] py-[var(--space-1)] shadow-[var(--shadow-lg)]">
-              <button
-                type="button"
-                onClick={() => {
-                  setStyle("");
-                  setStyleOpen(false);
-                }}
-                className={`w-full px-[var(--space-3)] py-[var(--space-2)] text-left text-[12px] transition-colors hover:bg-[var(--color-bg-hover)] ${!style ? "font-bold text-[var(--color-brand-blue)]" : "text-[var(--color-text-primary)]"}`}
-              >
-                {t("dashboard.styleDefault")}
-              </button>
-              {CONTENT_STYLES.map((s) => (
+        <div className="flex items-center gap-[var(--space-3)]">
+          <div className="relative" ref={dropdownRef}>
+            <button
+              type="button"
+              onClick={() => setStyleOpen(!styleOpen)}
+              className="flex items-center gap-[var(--space-1)] rounded-[var(--radius-md)] border border-[var(--color-border-default)] px-[var(--space-2)] py-[4px] text-[11px] text-[var(--color-text-secondary)] transition-colors duration-150 hover:bg-[var(--color-bg-hover)]"
+            >
+              {selectedStyleLabel}
+              <ChevronDown size={12} strokeWidth={1.5} />
+            </button>
+            {styleOpen && (
+              <div className="absolute bottom-full left-0 z-50 mb-[var(--space-1)] min-w-[160px] rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-bg-card)] py-[var(--space-1)] shadow-[var(--shadow-lg)]">
                 <button
-                  key={s}
                   type="button"
                   onClick={() => {
-                    setStyle(s);
+                    setStyle("");
                     setStyleOpen(false);
                   }}
-                  className={`w-full px-[var(--space-3)] py-[var(--space-2)] text-left text-[12px] transition-colors hover:bg-[var(--color-bg-hover)] ${style === s ? "font-bold text-[var(--color-brand-blue)]" : "text-[var(--color-text-primary)]"}`}
+                  className={`w-full px-[var(--space-3)] py-[var(--space-2)] text-left text-[12px] transition-colors hover:bg-[var(--color-bg-hover)] ${!style ? "font-bold text-[var(--color-brand-blue)]" : "text-[var(--color-text-primary)]"}`}
                 >
-                  {t(`dashboard.styles.${s}`)}
+                  {t("dashboard.styleDefault")}
                 </button>
-              ))}
-            </div>
-          )}
+                {CONTENT_STYLES.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => {
+                      setStyle(s);
+                      setStyleOpen(false);
+                    }}
+                    className={`w-full px-[var(--space-3)] py-[var(--space-2)] text-left text-[12px] transition-colors hover:bg-[var(--color-bg-hover)] ${style === s ? "font-bold text-[var(--color-brand-blue)]" : "text-[var(--color-text-primary)]"}`}
+                  >
+                    {t(`dashboard.styles.${s}`)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Duration selector */}
+          <div className="flex items-center gap-[var(--space-1)]">
+            <Clock
+              size={12}
+              strokeWidth={1.5}
+              className="text-[var(--color-text-tertiary)]"
+            />
+            <input
+              type="range"
+              min={VIDEO_MIN_DURATION}
+              max={VIDEO_MAX_DURATION}
+              step={5}
+              value={duration}
+              onChange={(e) => setDuration(Number(e.target.value))}
+              className="w-[60px] h-[3px] accent-[var(--color-brand-blue)] cursor-pointer"
+            />
+            <span className="text-[11px] text-[var(--color-text-secondary)] min-w-[28px]">
+              {duration}s
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-[var(--space-3)]">

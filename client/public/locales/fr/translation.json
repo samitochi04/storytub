@@ -5,7 +5,8 @@
     "blog": "Blog",
     "about": "A propos",
     "login": "Connexion",
-    "signup": "Inscription"
+    "signup": "Inscription",
+    "dashboard": "Tableau de bord"
   },
   "footer": {
     "product": "Produit",
@@ -30,7 +31,9 @@
     "notifications": "Notifications",
     "support": "Support",
     "settings": "Parametres",
-    "profile": "Profil"
+    "profile": "Profil",
+    "lightMode": "Mode clair",
+    "darkMode": "Mode sombre"
   },
   "mobile": {
     "home": "Accueil",
@@ -397,6 +400,7 @@
     "copied": "Copie!",
     "retry": "Reessayer",
     "delete": "Supprimer",
+    "cancel": "Annuler",
     "created": "Cree le",
     "duration": "Duree",
     "creditsUsed": "Credits utilises",
@@ -420,7 +424,7 @@
     "confirmDelete": "Voulez-vous vraiment supprimer cette voix?"
   },
   "credits": {
-    "balance": "Solde de credits"
+    "balance": "Credits"
   },
   "pricing": {
     "seoTitle": "Tarifs",

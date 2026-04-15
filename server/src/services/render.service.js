@@ -105,7 +105,9 @@ Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
       let karaText = "";
       for (const word of chunk) {
         const durCs = Math.round((word.end - word.start) * 100);
-        karaText += `{\\kf${durCs}}${word.word} `;
+        const cleanWord = word.word.trim();
+        if (!cleanWord) continue;
+        karaText += `{\\kf${durCs}}${cleanWord} `;
       }
 
       const startTS = formatASSTime(chunkStart);
@@ -152,7 +154,7 @@ async function renderSceneClip(scene, workDir, sceneIdx) {
     "-loop",
     "1",
     "-t",
-    String(duration + 0.5),
+    String(duration),
     "-i",
     imgPath,
     "-i",
@@ -173,7 +175,8 @@ async function renderSceneClip(scene, workDir, sceneIdx) {
     "aac",
     "-b:a",
     "128k",
-    "-shortest",
+    "-t",
+    String(duration),
     "-f",
     "mpegts",
     clipPath,
@@ -246,12 +249,13 @@ export async function renderVideo({
       "Render: scene clips created",
     );
 
-    // ── 3. Calculate offsets for subtitle timing ──
+    // ── 3. Calculate offsets for subtitle timing using actual clip durations ──
     const sceneOffsets = [];
     let cumulative = 0;
-    for (const d of sceneDurations) {
+    for (const clipPath of clipPaths) {
       sceneOffsets.push(cumulative);
-      cumulative += d;
+      const clipDur = await getAudioDuration(clipPath);
+      cumulative += clipDur;
     }
 
     // ── 4. Generate ASS subtitles ──
@@ -299,12 +303,34 @@ export async function renderVideo({
 
     logger.info({ videoId }, "Render: final video encoded");
 
+    // ── 7. Extract thumbnail from first scene image ──
+    const thumbPath = join(workDir, `${videoId}_thumb.jpg`);
+    // Take the first scene image and resize it for thumbnail
+    const firstImgPath = join(workDir, "scene_0.jpg");
+    await runCmd(FFMPEG, [
+      "-y",
+      "-i",
+      firstImgPath,
+      "-vframes",
+      "1",
+      "-vf",
+      `scale=480:-1`,
+      "-q:v",
+      "4",
+      thumbPath,
+    ]);
+
+    const thumbBuffer = await readFile(thumbPath);
+
     const fileBuffer = await readFile(outputPath);
-    const totalDuration = sceneDurations.reduce((a, b) => a + b, 0);
+
+    // Get accurate duration from the final rendered file
+    const actualDuration = await getAudioDuration(outputPath);
 
     return {
       fileBuffer,
-      durationSeconds: Math.round(totalDuration * 100) / 100,
+      thumbBuffer,
+      durationSeconds: Math.round(actualDuration),
       fileSizeBytes: fileBuffer.length,
     };
   } finally {
@@ -314,13 +340,19 @@ export async function renderVideo({
 }
 
 /**
- * Upload a rendered video file to Supabase Storage.
+ * Upload a rendered video file and thumbnail to Supabase Storage.
  * @param {Buffer} fileBuffer - MP4 file contents
  * @param {string} videoId
  * @param {string} userId - User or "guest"
+ * @param {Buffer} [thumbBuffer] - JPEG thumbnail
  * @returns {{ videoUrl: string, thumbnailUrl: string | null }}
  */
-export async function uploadToStorage(fileBuffer, videoId, userId) {
+export async function uploadToStorage(
+  fileBuffer,
+  videoId,
+  userId,
+  thumbBuffer,
+) {
   const path = `${userId}/${videoId}.mp4`;
 
   logger.info({ path, bytes: fileBuffer.length }, "Uploading video to storage");
@@ -337,9 +369,42 @@ export async function uploadToStorage(fileBuffer, videoId, userId) {
     throw error;
   }
 
+  // Upload thumbnail
+  let thumbnailUrl = null;
+  if (thumbBuffer) {
+    const thumbPath = `${userId}/${videoId}_thumb.jpg`;
+    const { error: thumbErr } = await supabase.storage
+      .from("videos")
+      .upload(thumbPath, thumbBuffer, {
+        contentType: "image/jpeg",
+        upsert: true,
+      });
+
+    if (!thumbErr) {
+      const { data: thumbSigned } = await supabase.storage
+        .from("videos")
+        .createSignedUrl(thumbPath, 365 * 24 * 60 * 60);
+      thumbnailUrl = thumbSigned?.signedUrl || null;
+
+      if (!thumbnailUrl) {
+        const {
+          data: { publicUrl: thumbPublic },
+        } = supabase.storage.from("videos").getPublicUrl(thumbPath);
+        thumbnailUrl = thumbPublic;
+      }
+    } else {
+      logger.warn({ error: thumbErr }, "Thumbnail upload failed, skipping");
+    }
+  }
+
   const {
     data: { publicUrl },
   } = supabase.storage.from("videos").getPublicUrl(path);
 
-  return { videoUrl: publicUrl, thumbnailUrl: null };
+  // Also create a signed URL (valid for 7 days) as fallback
+  const { data: signedData } = await supabase.storage
+    .from("videos")
+    .createSignedUrl(path, 7 * 24 * 60 * 60);
+
+  return { videoUrl: signedData?.signedUrl || publicUrl, thumbnailUrl };
 }

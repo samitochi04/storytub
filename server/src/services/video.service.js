@@ -54,7 +54,10 @@ export async function runPipeline(video) {
       video.target_duration,
     );
 
-    await supabase.from("videos").update({ script }).eq("id", videoId);
+    await supabase
+      .from("videos")
+      .update({ script, title: script.title || video.title })
+      .eq("id", videoId);
 
     // ── Step 2: Fetch Images ────────────────────────────────────
     let scenes = await fetchSceneImages(script.scenes, video.language);
@@ -84,6 +87,7 @@ export async function runPipeline(video) {
       rendered.fileBuffer,
       videoId,
       userId ?? "guest",
+      rendered.thumbBuffer,
     );
 
     // ── Step 7: Mark Complete ───────────────────────────────────
@@ -118,7 +122,7 @@ export async function runPipeline(video) {
     logger.error({ err, videoId }, "Video pipeline failed");
 
     await updateVideoStatus(videoId, "failed", {
-      error_message: err.message?.slice(0, 500),
+      error_message: "Video generation failed. Please try again later.",
     });
 
     // Refund credits if a logged-in user was charged

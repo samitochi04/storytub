@@ -5,7 +5,7 @@ import { Bell } from "lucide-react";
 import { supabase } from "@/config/supabase";
 import useAuthStore from "@/stores/authStore";
 
-export default function NotificationBell() {
+export default function NotificationBell({ expanded = false }) {
   const { t } = useTranslation();
   const user = useAuthStore((s) => s.user);
   const [unread, setUnread] = useState(0);
@@ -44,16 +44,30 @@ export default function NotificationBell() {
       to="/notifications"
       title={t("sidebar.notifications")}
       className={({ isActive }) =>
-        `relative flex items-center justify-center w-[32px] h-[32px] rounded-[var(--radius-md)] transition-all duration-150 ${
+        `relative flex items-center gap-[var(--space-3)] h-[32px] rounded-[var(--radius-md)] transition-all duration-150 ${
+          expanded ? "px-[var(--space-3)] w-full" : "justify-center w-[32px]"
+        } ${
           isActive
             ? "bg-[var(--color-text-primary)] text-[var(--color-bg-page)]"
             : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)]"
         }`
       }
     >
-      <Bell size={18} strokeWidth={1.5} strokeLinecap="round" />
+      <Bell
+        size={18}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        className="shrink-0"
+      />
+      {expanded && (
+        <span className="text-[12px] font-normal whitespace-nowrap overflow-hidden">
+          {t("sidebar.notifications")}
+        </span>
+      )}
       {unread > 0 && (
-        <span className="absolute -top-[2px] -right-[2px] flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-[var(--color-error)] px-[3px] text-[9px] font-bold text-white">
+        <span
+          className={`absolute ${expanded ? "left-[22px] top-[2px]" : "-top-[2px] -right-[2px]"} flex h-[14px] min-w-[14px] items-center justify-center rounded-full bg-[var(--color-error)] px-[3px] text-[9px] font-bold text-white`}
+        >
           {unread > 99 ? "99+" : unread}
         </span>
       )}

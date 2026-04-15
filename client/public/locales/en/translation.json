@@ -5,7 +5,8 @@
     "blog": "Blog",
     "about": "About",
     "login": "Log in",
-    "signup": "Sign up"
+    "signup": "Sign up",
+    "dashboard": "Dashboard"
   },
   "footer": {
     "product": "Product",
@@ -30,7 +31,9 @@
     "notifications": "Notifications",
     "support": "Support",
     "settings": "Settings",
-    "profile": "Profile"
+    "profile": "Profile",
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode"
   },
   "mobile": {
     "home": "Home",
@@ -397,6 +400,7 @@
     "copied": "Copied!",
     "retry": "Retry",
     "delete": "Delete",
+    "cancel": "Cancel",
     "created": "Created",
     "duration": "Duration",
     "creditsUsed": "Credits used",
@@ -420,7 +424,7 @@
     "confirmDelete": "Are you sure you want to delete this voice?"
   },
   "credits": {
-    "balance": "Credits balance"
+    "balance": "Credits"
   },
   "pricing": {
     "seoTitle": "Pricing",
