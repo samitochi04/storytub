@@ -212,5 +212,60 @@
     "renderingDescription": "Assemblage des scenes, de l'audio et des sous-titres.",
     "completedDescription": "Votre video a ete generee avec succes.",
     "failedDescription": "Un probleme est survenu. Veuillez reessayer."
+  },
+  "generate": {
+    "title": "Generer une video",
+    "subtitle": "Remplissez les details ci-dessous pour creer votre video",
+    "topicLabel": "Sujet",
+    "topicPlaceholder": "Decrivez le sujet de votre video...",
+    "templateLabel": "Modele",
+    "languageLabel": "Langue",
+    "voiceLabel": "Voix",
+    "voicePlaceholder": "Selectionnez une voix",
+    "durationLabel": "Duree",
+    "estimatedCost": "Cout estime",
+    "credits": "credits",
+    "yourBalance": "Votre solde",
+    "submitting": "Generation...",
+    "notEnoughCredits": "Credits insuffisants",
+    "submit": "Generer la video",
+    "noTemplates": "Aucun modele disponible"
+  },
+  "videos": {
+    "title": "Mes videos",
+    "newVideo": "Nouvelle video",
+    "emptyTitle": "Aucune video",
+    "emptyDescription": "Generez votre premiere video pour commencer."
+  },
+  "videoDetail": {
+    "backToVideos": "Retour aux videos",
+    "notFound": "Video introuvable",
+    "confirmDelete": "Voulez-vous vraiment supprimer cette video?",
+    "download": "Telecharger",
+    "share": "Copier le lien",
+    "copied": "Copie!",
+    "retry": "Reessayer",
+    "delete": "Supprimer",
+    "created": "Cree le",
+    "duration": "Duree",
+    "creditsUsed": "Credits utilises",
+    "language": "Langue",
+    "topic": "Sujet"
+  },
+  "voices": {
+    "title": "Bibliotheque de voix",
+    "subtitle": "Parcourez les voix integrees ou clonez la votre",
+    "cloneTitle": "Cloner une voix",
+    "cloneNameLabel": "Nom de la voix",
+    "cloneNamePlaceholder": "Ma voix personnalisee",
+    "audioFileLabel": "Fichier audio",
+    "uploading": "Envoi en cours...",
+    "cloneButton": "Cloner la voix",
+    "premiumOnly": "Le clonage de voix est disponible avec le forfait Premium.",
+    "myVoices": "Mes voix",
+    "builtIn": "Voix integrees",
+    "noVoices": "Aucune voix disponible",
+    "cloned": "Clonee",
+    "confirmDelete": "Voulez-vous vraiment supprimer cette voix?"
   }
 }

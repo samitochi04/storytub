@@ -212,5 +212,60 @@
     "renderingDescription": "Composing scenes, audio, and captions into video.",
     "completedDescription": "Your video has been generated successfully.",
     "failedDescription": "Something went wrong. Please try again."
+  },
+  "generate": {
+    "title": "Generate Video",
+    "subtitle": "Fill in the details below to create your video",
+    "topicLabel": "Topic",
+    "topicPlaceholder": "Describe what your video should be about...",
+    "templateLabel": "Template",
+    "languageLabel": "Language",
+    "voiceLabel": "Voice",
+    "voicePlaceholder": "Select a voice",
+    "durationLabel": "Duration",
+    "estimatedCost": "Estimated cost",
+    "credits": "credits",
+    "yourBalance": "Your balance",
+    "submitting": "Generating...",
+    "notEnoughCredits": "Not enough credits",
+    "submit": "Generate video",
+    "noTemplates": "No templates available"
+  },
+  "videos": {
+    "title": "My Videos",
+    "newVideo": "New Video",
+    "emptyTitle": "No videos yet",
+    "emptyDescription": "Generate your first video to get started."
+  },
+  "videoDetail": {
+    "backToVideos": "Back to videos",
+    "notFound": "Video not found",
+    "confirmDelete": "Are you sure you want to delete this video?",
+    "download": "Download",
+    "share": "Share link",
+    "copied": "Copied!",
+    "retry": "Retry",
+    "delete": "Delete",
+    "created": "Created",
+    "duration": "Duration",
+    "creditsUsed": "Credits used",
+    "language": "Language",
+    "topic": "Topic"
+  },
+  "voices": {
+    "title": "Voice Library",
+    "subtitle": "Browse built in voices or clone your own",
+    "cloneTitle": "Clone a voice",
+    "cloneNameLabel": "Voice name",
+    "cloneNamePlaceholder": "My custom voice",
+    "audioFileLabel": "Audio file",
+    "uploading": "Uploading...",
+    "cloneButton": "Clone voice",
+    "premiumOnly": "Voice cloning is available on the Premium plan.",
+    "myVoices": "My voices",
+    "builtIn": "Built in voices",
+    "noVoices": "No voices available",
+    "cloned": "Cloned",
+    "confirmDelete": "Are you sure you want to delete this voice?"
   }
 }
