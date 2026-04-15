@@ -176,5 +176,41 @@
   "common": {
     "loading": "Chargement...",
     "slug": "Identifiant"
+  },
+  "dashboard": {
+    "greeting": "Bonjour,",
+    "tagline": "Que souhaitez-vous creer?",
+    "subtitle": "Utilisez l'une des suggestions ci-dessous ou entrez votre propre sujet",
+    "inputPlaceholder": "Demandez ce que vous voulez...",
+    "scopeAll": "Tout le Web",
+    "addAttachment": "Ajouter un fichier",
+    "useImage": "Utiliser une image",
+    "send": "Envoyer",
+    "prompts": {
+      "personal": "Creer une histoire sur ma routine quotidienne",
+      "email": "Resumer les actualites de la semaine",
+      "summarize": "Transformer cet article en video courte",
+      "technical": "Expliquer comment l'IA fonctionne en 60 secondes"
+    }
+  },
+  "guest": {
+    "heroDescription": "Generez des scripts, voix off et sous-titres en francais et en anglais. Essayez gratuitement, sans inscription.",
+    "topicPlaceholder": "Entrez un sujet pour votre video...",
+    "tryFree": "Essayer gratuitement",
+    "generating": "Generation en cours...",
+    "generationFailed": "La generation de la video a echoue. Veuillez reessayer.",
+    "previewReady": "Votre video d'apercu est prete!"
+  },
+  "videoStatus": {
+    "pending": "En attente dans la file...",
+    "generating": "Generation du script et des ressources...",
+    "rendering": "Rendu de votre video...",
+    "completed": "Video prete!",
+    "failed": "La generation a echoue",
+    "pendingDescription": "Votre video est en file d'attente et demarrera bientot.",
+    "generatingDescription": "L'IA redige le script et recupere les images.",
+    "renderingDescription": "Assemblage des scenes, de l'audio et des sous-titres.",
+    "completedDescription": "Votre video a ete generee avec succes.",
+    "failedDescription": "Un probleme est survenu. Veuillez reessayer."
   }
 }

@@ -176,5 +176,41 @@
   "common": {
     "loading": "Loading...",
     "slug": "Slug"
+  },
+  "dashboard": {
+    "greeting": "Hi there,",
+    "tagline": "What would you like to create?",
+    "subtitle": "Use one of the most common prompts below or use your own to begin",
+    "inputPlaceholder": "Ask whatever you want...",
+    "scopeAll": "All Web",
+    "addAttachment": "Add Attachment",
+    "useImage": "Use Image",
+    "send": "Send",
+    "prompts": {
+      "personal": "Create a story about my daily routine",
+      "email": "Summarize this week's top news",
+      "summarize": "Turn this article into a short video",
+      "technical": "Explain how AI works in 60 seconds"
+    }
+  },
+  "guest": {
+    "heroDescription": "Generate scripts, voiceovers, and captions in French and English. Try it free, no signup required.",
+    "topicPlaceholder": "Enter a topic for your video...",
+    "tryFree": "Try it free",
+    "generating": "Starting generation...",
+    "generationFailed": "Video generation failed. Please try again.",
+    "previewReady": "Your preview video is ready!"
+  },
+  "videoStatus": {
+    "pending": "Waiting in queue...",
+    "generating": "Generating script and assets...",
+    "rendering": "Rendering your video...",
+    "completed": "Video ready!",
+    "failed": "Generation failed",
+    "pendingDescription": "Your video is queued and will start soon.",
+    "generatingDescription": "AI is writing the script and fetching images.",
+    "renderingDescription": "Composing scenes, audio, and captions into video.",
+    "completedDescription": "Your video has been generated successfully.",
+    "failedDescription": "Something went wrong. Please try again."
   }
 }

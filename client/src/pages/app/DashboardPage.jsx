@@ -1,19 +1,19 @@
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import SEOHead from "@/components/layout/SEOHead";
+import GreetingBlock from "@/components/dashboard/GreetingBlock";
+import PromptCards from "@/components/dashboard/PromptCards";
+import PromptInput from "@/components/dashboard/PromptInput";
 
 export default function DashboardPage() {
-  const { t } = useTranslation();
+  const [promptValue, setPromptValue] = useState("");
 
   return (
     <>
       <SEOHead title="Dashboard" noindex />
-      <div className="mx-auto max-w-[900px] px-[var(--space-4)] py-[var(--space-8)]">
-        <h1 className="text-[24px] font-bold text-[var(--color-text-primary)]">
-          {t("pages.dashboardTitle")}
-        </h1>
-        <p className="mt-[var(--space-4)] text-[14px] text-[var(--color-text-secondary)]">
-          {t("pages.dashboardPlaceholder")}
-        </p>
+      <div className="mx-auto flex min-h-[calc(100vh-72px)] max-w-[600px] flex-col justify-center px-[var(--space-8)] py-[var(--space-8)]">
+        <GreetingBlock />
+        <PromptCards onSelect={setPromptValue} />
+        <PromptInput initialValue={promptValue} />
       </div>
     </>
   );
