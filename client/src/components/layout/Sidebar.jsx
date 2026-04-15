@@ -6,13 +6,13 @@ import {
   Film,
   CreditCard,
   Mic,
-  Bell,
   HelpCircle,
   Settings,
   User,
 } from "lucide-react";
 import { LogoIcon } from "@/components/shared/Logo";
 import CreditDisplay from "@/components/shared/CreditDisplay";
+import NotificationBell from "@/components/shared/NotificationBell";
 import { ThemeToggle } from "@/components/ui";
 
 const NAV_ITEMS = [
@@ -21,7 +21,6 @@ const NAV_ITEMS = [
   { to: "/videos", icon: Film, key: "sidebar.videos" },
   { to: "/billing", icon: CreditCard, key: "sidebar.billing" },
   { to: "/voices", icon: Mic, key: "sidebar.voices" },
-  { to: "/notifications", icon: Bell, key: "sidebar.notifications" },
   { to: "/support", icon: HelpCircle, key: "sidebar.support" },
 ];
 
@@ -74,6 +73,7 @@ export default function Sidebar() {
             labelKey={item.key}
           />
         ))}
+        <NotificationBell />
       </nav>
 
       {/* Bottom nav */}

@@ -1,10 +1,35 @@
 import { useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Sparkles,
+  Zap,
+  Globe,
+  Mic,
+  Captions,
+  Film,
+  Clock,
+  Star,
+} from "lucide-react";
 import SEOHead from "@/components/layout/SEOHead";
 import { Button } from "@/components/ui";
 import VideoStatus from "@/components/shared/VideoStatus";
 import { generateGuestPreview } from "@/services/guest.service";
+
+const FEATURES = [
+  { icon: Zap, key: "home.feature1" },
+  { icon: Globe, key: "home.feature2" },
+  { icon: Mic, key: "home.feature3" },
+  { icon: Captions, key: "home.feature4" },
+  { icon: Film, key: "home.feature5" },
+  { icon: Clock, key: "home.feature6" },
+];
+
+const TESTIMONIALS = [
+  { name: "Alex R.", role: "Content Creator", key: "home.testimonial1" },
+  { name: "Marie D.", role: "Social Media Manager", key: "home.testimonial2" },
+  { name: "James L.", role: "Entrepreneur", key: "home.testimonial3" },
+];
 
 export default function HomePage() {
   const { t } = useTranslation();
@@ -18,12 +43,10 @@ export default function HomePage() {
     e.preventDefault();
     const trimmed = topic.trim();
     if (!trimmed) return;
-
     setLoading(true);
     setError(null);
     setVideoId(null);
     setCompleted(false);
-
     try {
       const data = await generateGuestPreview({ topic: trimmed });
       setVideoId(data.video_id);
@@ -55,19 +78,20 @@ export default function HomePage() {
           description: "AI-powered viral video generator",
         }}
       />
-      <div className="mx-auto max-w-[1200px] px-[var(--space-4)] py-[var(--space-16)]">
-        {/* Hero */}
+
+      {/* Hero */}
+      <section className="mx-auto max-w-[1000px] px-[var(--space-4)] pt-[var(--space-16)] pb-[var(--space-12)]">
         <div className="mx-auto max-w-[600px] text-center">
-          <h1 className="text-[32px] font-bold leading-[1.15] text-[var(--color-text-primary)]">
-            {t("pages.homeTitle")}
+          <h1 className="text-[36px] font-bold leading-[1.1] text-[var(--color-text-primary)] sm:text-[44px]">
+            {t("home.heroTitle")}
           </h1>
-          <p className="mt-[var(--space-4)] text-[14px] leading-[1.5] text-[var(--color-text-secondary)]">
-            {t("guest.heroDescription")}
+          <p className="mt-[var(--space-4)] text-[15px] leading-[1.6] text-[var(--color-text-secondary)]">
+            {t("home.heroDescription")}
           </p>
         </div>
 
         {/* Guest CTA */}
-        <div className="mx-auto mt-[var(--space-12)] max-w-[480px]">
+        <div className="mx-auto mt-[var(--space-8)] max-w-[480px]">
           <form
             onSubmit={handleGenerate}
             className="flex flex-col gap-[var(--space-3)]"
@@ -114,7 +138,90 @@ export default function HomePage() {
             </p>
           )}
         </div>
-      </div>
+
+        <p className="mt-[var(--space-4)] text-center text-[11px] text-[var(--color-text-tertiary)]">
+          {t("home.noCard")}
+        </p>
+      </section>
+
+      {/* Features grid */}
+      <section className="mx-auto max-w-[1000px] px-[var(--space-4)] py-[var(--space-12)]">
+        <h2 className="text-center text-[22px] font-bold text-[var(--color-text-primary)]">
+          {t("home.featuresTitle")}
+        </h2>
+        <div className="mt-[var(--space-8)] grid gap-[var(--space-4)] sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.map(({ icon: Icon, key }) => (
+            <div
+              key={key}
+              className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-bg-card)] p-[var(--space-4)] shadow-[var(--shadow-sm)]"
+            >
+              <Icon
+                size={20}
+                strokeWidth={1.5}
+                className="text-[var(--color-brand-blue)]"
+              />
+              <h3 className="mt-[var(--space-3)] text-[14px] font-bold text-[var(--color-text-primary)]">
+                {t(`${key}.title`)}
+              </h3>
+              <p className="mt-[var(--space-1)] text-[12px] text-[var(--color-text-secondary)]">
+                {t(`${key}.description`)}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Social proof */}
+      <section className="mx-auto max-w-[1000px] px-[var(--space-4)] py-[var(--space-12)]">
+        <h2 className="text-center text-[22px] font-bold text-[var(--color-text-primary)]">
+          {t("home.testimonialsTitle")}
+        </h2>
+        <div className="mt-[var(--space-8)] grid gap-[var(--space-4)] sm:grid-cols-3">
+          {TESTIMONIALS.map(({ name, role, key }) => (
+            <div
+              key={key}
+              className="rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-[var(--color-bg-card)] p-[var(--space-4)] shadow-[var(--shadow-sm)]"
+            >
+              <div className="flex gap-[2px]">
+                {[...Array(5)].map((_, i) => (
+                  <Star
+                    key={i}
+                    size={12}
+                    strokeWidth={0}
+                    fill="var(--color-warning)"
+                  />
+                ))}
+              </div>
+              <p className="mt-[var(--space-3)] text-[12px] leading-[1.5] text-[var(--color-text-secondary)]">
+                "{t(key)}"
+              </p>
+              <div className="mt-[var(--space-3)]">
+                <p className="text-[12px] font-bold text-[var(--color-text-primary)]">
+                  {name}
+                </p>
+                <p className="text-[11px] text-[var(--color-text-tertiary)]">
+                  {role}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="mx-auto max-w-[1000px] px-[var(--space-4)] py-[var(--space-16)] text-center">
+        <h2 className="text-[22px] font-bold text-[var(--color-text-primary)]">
+          {t("home.ctaTitle")}
+        </h2>
+        <p className="mt-[var(--space-2)] text-[14px] text-[var(--color-text-secondary)]">
+          {t("home.ctaDescription")}
+        </p>
+        <Link to="/signup">
+          <Button size="lg" className="mt-[var(--space-4)]">
+            {t("home.ctaButton")}
+          </Button>
+        </Link>
+      </section>
     </>
   );
 }

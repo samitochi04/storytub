@@ -175,7 +175,8 @@
   },
   "common": {
     "loading": "Loading...",
-    "slug": "Slug"
+    "slug": "Slug",
+    "cancel": "Cancel"
   },
   "dashboard": {
     "greeting": "Hi there,",
@@ -331,5 +332,293 @@
       "coupon": "Coupon bonus",
       "admin_adjustment": "Admin adjustment"
     }
+  },
+  "home": {
+    "heroTitle": "Create viral videos with AI",
+    "heroDescription": "Generate scripts, voiceovers, and captions in French and English. Try it free, no signup required.",
+    "noCard": "No credit card required. Start in seconds.",
+    "featuresTitle": "Everything you need to create amazing videos",
+    "feature1": {
+      "title": "AI Script Generation",
+      "description": "Write engaging scripts automatically with advanced AI. Just enter a topic and get a ready to use script."
+    },
+    "feature2": {
+      "title": "Multilingual Support",
+      "description": "Create videos in English and French. Reach a wider audience without extra effort."
+    },
+    "feature3": {
+      "title": "Natural Voiceovers",
+      "description": "Professional AI voices that sound natural. Choose from built in voices or clone your own."
+    },
+    "feature4": {
+      "title": "Automatic Captions",
+      "description": "Captions generated and synced automatically. Boost accessibility and engagement."
+    },
+    "feature5": {
+      "title": "Video Templates",
+      "description": "Choose from ready made templates for different styles and formats. Get started faster."
+    },
+    "feature6": {
+      "title": "Fast Rendering",
+      "description": "Videos rendered in minutes, not hours. Get your content ready to publish quickly."
+    },
+    "testimonialsTitle": "What creators are saying",
+    "testimonial1": "StoryTub saves me hours every week. The AI scripts are surprisingly good.",
+    "testimonial2": "I can finally create short videos for both English and French audiences.",
+    "testimonial3": "The voice quality and automatic captions are a game changer for my business.",
+    "ctaTitle": "Ready to create your first video?",
+    "ctaDescription": "Join thousands of creators using AI to produce engaging short videos.",
+    "ctaButton": "Get started for free"
+  },
+  "features": {
+    "metaTitle": "Features",
+    "metaDescription": "Explore StoryTub features: AI scripts, voiceovers, captions, templates, and more.",
+    "title": "Powerful features for video creators",
+    "subtitle": "Everything you need to go from idea to published video in minutes.",
+    "aiScripts": {
+      "title": "AI Script Generation",
+      "description": "Enter a topic and let AI write a compelling, structured script for your video. Supports multiple tones and styles."
+    },
+    "voiceover": {
+      "title": "Natural Voiceovers",
+      "description": "Choose from high quality AI voices or clone your own voice. Every word sounds natural and professional."
+    },
+    "captions": {
+      "title": "Automatic Captions",
+      "description": "Captions are generated and perfectly synchronized with the audio. Increase reach and accessibility."
+    },
+    "multilingual": {
+      "title": "Multilingual Support",
+      "description": "Create content in English and French. Scripts, voices, and captions all work seamlessly in both languages."
+    },
+    "templates": {
+      "title": "Video Templates",
+      "description": "Start with professionally designed templates. Customize colors, fonts, and layouts to match your brand."
+    },
+    "fast": {
+      "title": "Fast Rendering",
+      "description": "Your video is rendered in the cloud and ready to download in minutes. No heavy software needed."
+    },
+    "branding": {
+      "title": "Custom Branding",
+      "description": "Add your logo, brand colors, and fonts to every video. Maintain a consistent visual identity."
+    },
+    "analytics": {
+      "title": "Usage Analytics",
+      "description": "Track your credit usage, video count, and generation history from your dashboard."
+    },
+    "safe": {
+      "title": "Secure & Private",
+      "description": "Your data is encrypted and stored securely. We never share your content with third parties."
+    }
+  },
+  "about": {
+    "metaTitle": "About",
+    "metaDescription": "Learn about StoryTub, our mission, and the team behind AI video generation.",
+    "title": "About StoryTub",
+    "mission": "We believe everyone should be able to create professional quality videos. StoryTub uses AI to make video creation fast, affordable, and accessible to all creators.",
+    "storyTitle": "Our Story",
+    "storyContent": "StoryTub was born from a simple observation: creating short videos takes too long. Between writing scripts, recording voiceovers, adding captions, and editing, creators spend hours on a single video. We built StoryTub to automate the entire process using AI, so you can focus on what matters most: your ideas.",
+    "valuesTitle": "Our Values",
+    "value1": {
+      "title": "Simplicity",
+      "description": "Powerful tools that anyone can use. No video editing experience required."
+    },
+    "value2": {
+      "title": "Accessibility",
+      "description": "Affordable pricing and a generous free tier so everyone can get started."
+    },
+    "value3": {
+      "title": "Innovation",
+      "description": "We are always pushing the boundaries of what AI can do for content creators."
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact",
+    "metaDescription": "Get in touch with the StoryTub team. We are here to help.",
+    "title": "Get in Touch",
+    "subtitle": "Have a question or feedback? We would love to hear from you.",
+    "name": "Name",
+    "email": "Email",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send message",
+    "sending": "Sending...",
+    "sent": "Message sent!",
+    "sentDescription": "Thank you for reaching out. We will get back to you as soon as possible."
+  },
+  "terms": {
+    "metaTitle": "Terms of Service",
+    "metaDescription": "StoryTub terms of service and usage conditions.",
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: January 2025",
+    "acceptance": {
+      "title": "1. Acceptance of Terms",
+      "content": "By accessing or using StoryTub, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service."
+    },
+    "accounts": {
+      "title": "2. User Accounts",
+      "content": "You are responsible for maintaining the confidentiality of your account credentials. You must provide accurate information when creating your account."
+    },
+    "credits": {
+      "title": "3. Credits and Payments",
+      "content": "Credits are used to generate videos. Subscription credits reset each billing cycle. Bundle credits do not expire. All payments are processed through Stripe."
+    },
+    "content": {
+      "title": "4. User Content",
+      "content": "You retain ownership of the content you create using StoryTub. You are responsible for ensuring your content does not violate any laws or third party rights."
+    },
+    "ip": {
+      "title": "5. Intellectual Property",
+      "content": "StoryTub and its original content, features, and functionality are owned by StoryTub and are protected by international copyright and trademark laws."
+    },
+    "prohibited": {
+      "title": "6. Prohibited Uses",
+      "content": "You may not use StoryTub to create content that is illegal, harmful, threatening, abusive, harassing, defamatory, or otherwise objectionable."
+    },
+    "limitation": {
+      "title": "7. Limitation of Liability",
+      "content": "StoryTub shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service."
+    },
+    "termination": {
+      "title": "8. Termination",
+      "content": "We may terminate or suspend your account at any time without prior notice if you breach these terms."
+    },
+    "changes": {
+      "title": "9. Changes to Terms",
+      "content": "We reserve the right to modify these terms at any time. Continued use of the service after changes constitutes acceptance of the new terms."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "content": "For questions about these terms, contact us at support@storytub.com."
+    }
+  },
+  "privacy": {
+    "metaTitle": "Privacy Policy",
+    "metaDescription": "StoryTub privacy policy and data handling practices.",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: January 2025",
+    "collection": {
+      "title": "1. Information We Collect",
+      "content": "We collect information you provide when creating an account (email, name), usage data (videos created, credits used), and technical data (IP address, browser type)."
+    },
+    "usage": {
+      "title": "2. How We Use Your Information",
+      "content": "We use your information to provide and improve our service, process payments, send important notifications, and provide customer support."
+    },
+    "sharing": {
+      "title": "3. Information Sharing",
+      "content": "We do not sell your personal information. We may share data with service providers (Stripe for payments, Supabase for hosting) who help us operate the platform."
+    },
+    "cookies": {
+      "title": "4. Cookies",
+      "content": "We use essential cookies for authentication and preferences. We also use analytics cookies to understand how our service is used. You can manage your cookie preferences."
+    },
+    "security": {
+      "title": "5. Data Security",
+      "content": "We implement industry standard security measures to protect your data, including encryption in transit and at rest."
+    },
+    "retention": {
+      "title": "6. Data Retention",
+      "content": "We retain your data for as long as your account is active. You can request deletion of your account and associated data at any time."
+    },
+    "rights": {
+      "title": "7. Your Rights",
+      "content": "You have the right to access, correct, or delete your personal data. You can also request a copy of your data or restrict its processing."
+    },
+    "children": {
+      "title": "8. Children's Privacy",
+      "content": "StoryTub is not intended for children under 13. We do not knowingly collect personal information from children."
+    },
+    "changes": {
+      "title": "9. Changes to This Policy",
+      "content": "We may update this policy from time to time. We will notify you of significant changes via email or in app notification."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "content": "For privacy related questions, contact us at support@storytub.com."
+    }
+  },
+  "blog": {
+    "metaTitle": "Blog",
+    "metaDescription": "Read the latest articles on AI video creation, content strategy, and more.",
+    "title": "Blog",
+    "noPosts": "No articles published yet. Check back soon!",
+    "categories": "Categories",
+    "allCategories": "All",
+    "tags": "Tags",
+    "postNotFound": "Article not found.",
+    "backToBlog": "Back to blog",
+    "relatedPosts": "Related articles"
+  },
+  "support": {
+    "title": "Support",
+    "newTicket": "New ticket",
+    "subject": "Subject",
+    "category": "Category",
+    "priority": "Priority",
+    "message": "Message",
+    "send": "Submit",
+    "sending": "Submitting...",
+    "backToTickets": "Back to tickets",
+    "noTickets": "No support tickets yet.",
+    "replyPlaceholder": "Type your reply...",
+    "staff": "Support team",
+    "you": "You",
+    "cat_billing": "Billing",
+    "cat_technical": "Technical",
+    "cat_account": "Account",
+    "cat_feature_request": "Feature request",
+    "cat_bug_report": "Bug report",
+    "priority_low": "Low",
+    "priority_normal": "Normal",
+    "priority_high": "High",
+    "status_open": "Open",
+    "status_in_progress": "In progress",
+    "status_waiting": "Waiting",
+    "status_resolved": "Resolved",
+    "status_closed": "Closed"
+  },
+  "cookie": {
+    "message": "We use cookies to improve your experience. By continuing to use this site, you consent to our use of cookies.",
+    "learnMore": "Learn more",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "policy": {
+    "title": "Terms & Privacy",
+    "description": "Please review and accept our Terms of Service and Privacy Policy to continue using StoryTub.",
+    "viewTerms": "View Terms of Service",
+    "viewPrivacy": "View Privacy Policy",
+    "accept": "I accept",
+    "accepting": "Processing..."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Mark all as read",
+    "markRead": "Mark as read",
+    "empty": "No notifications yet.",
+    "delete": "Delete"
+  },
+  "profile": {
+    "title": "Profile",
+    "displayName": "Display name",
+    "displayNamePlaceholder": "Your name",
+    "avatarUrl": "Avatar URL",
+    "email": "Email",
+    "plan": "Plan",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Profile updated!"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "account": "Account",
+    "logout": "Log out",
+    "dangerZone": "Danger zone",
+    "deleteDescription": "Permanently delete your account and all associated data. This action cannot be undone.",
+    "deleteAccount": "Delete account",
+    "confirmDelete": "Are you sure you want to delete your account? This action is irreversible."
   }
 }

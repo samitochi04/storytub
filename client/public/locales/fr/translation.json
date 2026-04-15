@@ -175,7 +175,8 @@
   },
   "common": {
     "loading": "Chargement...",
-    "slug": "Identifiant"
+    "slug": "Identifiant",
+    "cancel": "Annuler"
   },
   "dashboard": {
     "greeting": "Bonjour,",
@@ -331,5 +332,293 @@
       "coupon": "Bonus coupon",
       "admin_adjustment": "Ajustement admin"
     }
+  },
+  "home": {
+    "heroTitle": "Creez des videos virales avec l'IA",
+    "heroDescription": "Generez des scripts, voix off et sous-titres en francais et en anglais. Essayez gratuitement, sans inscription.",
+    "noCard": "Aucune carte de credit requise. Commencez en quelques secondes.",
+    "featuresTitle": "Tout ce qu'il faut pour creer des videos incroyables",
+    "feature1": {
+      "title": "Generation de scripts IA",
+      "description": "Redigez des scripts captivants automatiquement avec l'IA. Entrez un sujet et obtenez un script pret a l'emploi."
+    },
+    "feature2": {
+      "title": "Support multilingue",
+      "description": "Creez des videos en anglais et en francais. Touchez un public plus large sans effort supplementaire."
+    },
+    "feature3": {
+      "title": "Voix off naturelles",
+      "description": "Des voix IA professionnelles au rendu naturel. Choisissez parmi les voix integrees ou clonez la votre."
+    },
+    "feature4": {
+      "title": "Sous-titres automatiques",
+      "description": "Sous-titres generes et synchronises automatiquement. Ameliorez l'accessibilite et l'engagement."
+    },
+    "feature5": {
+      "title": "Modeles video",
+      "description": "Choisissez parmi des modeles prets a l'emploi pour differents styles et formats. Demarrez plus vite."
+    },
+    "feature6": {
+      "title": "Rendu rapide",
+      "description": "Videos rendues en minutes, pas en heures. Publiez votre contenu rapidement."
+    },
+    "testimonialsTitle": "Ce que disent les createurs",
+    "testimonial1": "StoryTub me fait gagner des heures chaque semaine. Les scripts IA sont etonnamment bons.",
+    "testimonial2": "Je peux enfin creer des videos courtes pour mes audiences anglophone et francophone.",
+    "testimonial3": "La qualite des voix et les sous-titres automatiques changent la donne pour mon activite.",
+    "ctaTitle": "Pret a creer votre premiere video?",
+    "ctaDescription": "Rejoignez des milliers de createurs qui utilisent l'IA pour produire des videos courtes captivantes.",
+    "ctaButton": "Commencer gratuitement"
+  },
+  "features": {
+    "metaTitle": "Fonctionnalites",
+    "metaDescription": "Decouvrez les fonctionnalites de StoryTub: scripts IA, voix off, sous-titres, modeles et plus.",
+    "title": "Des fonctionnalites puissantes pour les createurs",
+    "subtitle": "Tout ce dont vous avez besoin pour passer de l'idee a la video publiee en quelques minutes.",
+    "aiScripts": {
+      "title": "Generation de scripts IA",
+      "description": "Entrez un sujet et laissez l'IA rediger un script structure et percutant pour votre video. Supporte plusieurs tons et styles."
+    },
+    "voiceover": {
+      "title": "Voix off naturelles",
+      "description": "Choisissez parmi des voix IA de haute qualite ou clonez votre propre voix. Chaque mot sonne naturel et professionnel."
+    },
+    "captions": {
+      "title": "Sous-titres automatiques",
+      "description": "Les sous-titres sont generes et parfaitement synchronises avec l'audio. Augmentez votre portee et l'accessibilite."
+    },
+    "multilingual": {
+      "title": "Support multilingue",
+      "description": "Creez du contenu en anglais et en francais. Scripts, voix et sous-titres fonctionnent parfaitement dans les deux langues."
+    },
+    "templates": {
+      "title": "Modeles video",
+      "description": "Commencez avec des modeles conçus professionnellement. Personnalisez les couleurs, polices et mises en page."
+    },
+    "fast": {
+      "title": "Rendu rapide",
+      "description": "Votre video est rendue dans le cloud et prete a telecharger en quelques minutes. Aucun logiciel lourd requis."
+    },
+    "branding": {
+      "title": "Image de marque",
+      "description": "Ajoutez votre logo, vos couleurs et polices a chaque video. Maintenez une identite visuelle coherente."
+    },
+    "analytics": {
+      "title": "Statistiques d'utilisation",
+      "description": "Suivez votre consommation de credits, le nombre de videos et l'historique de generation depuis votre tableau de bord."
+    },
+    "safe": {
+      "title": "Securise et prive",
+      "description": "Vos donnees sont chiffrees et stockees en toute securite. Nous ne partageons jamais votre contenu avec des tiers."
+    }
+  },
+  "about": {
+    "metaTitle": "A propos",
+    "metaDescription": "Decouvrez StoryTub, notre mission et l'equipe derriere la generation de videos par IA.",
+    "title": "A propos de StoryTub",
+    "mission": "Nous croyons que tout le monde devrait pouvoir creer des videos de qualite professionnelle. StoryTub utilise l'IA pour rendre la creation video rapide, abordable et accessible a tous les createurs.",
+    "storyTitle": "Notre histoire",
+    "storyContent": "StoryTub est ne d'un constat simple: creer des videos courtes prend trop de temps. Entre l'ecriture des scripts, l'enregistrement des voix off, l'ajout des sous-titres et le montage, les createurs passent des heures sur une seule video. Nous avons cree StoryTub pour automatiser tout le processus avec l'IA, afin que vous puissiez vous concentrer sur l'essentiel: vos idees.",
+    "valuesTitle": "Nos valeurs",
+    "value1": {
+      "title": "Simplicite",
+      "description": "Des outils puissants que tout le monde peut utiliser. Aucune experience en montage video requise."
+    },
+    "value2": {
+      "title": "Accessibilite",
+      "description": "Des tarifs abordables et un genereux forfait gratuit pour que chacun puisse commencer."
+    },
+    "value3": {
+      "title": "Innovation",
+      "description": "Nous repoussons constamment les limites de ce que l'IA peut faire pour les createurs de contenu."
+    }
+  },
+  "contact": {
+    "metaTitle": "Contact",
+    "metaDescription": "Contactez l'equipe StoryTub. Nous sommes la pour vous aider.",
+    "title": "Contactez-nous",
+    "subtitle": "Une question ou un retour? Nous serions ravis de vous entendre.",
+    "name": "Nom",
+    "email": "Email",
+    "subject": "Sujet",
+    "message": "Message",
+    "send": "Envoyer le message",
+    "sending": "Envoi en cours...",
+    "sent": "Message envoye!",
+    "sentDescription": "Merci de nous avoir contactes. Nous vous repondrons dans les plus brefs delais."
+  },
+  "terms": {
+    "metaTitle": "Conditions d'utilisation",
+    "metaDescription": "Conditions d'utilisation de StoryTub.",
+    "title": "Conditions d'utilisation",
+    "lastUpdated": "Derniere mise a jour: janvier 2025",
+    "acceptance": {
+      "title": "1. Acceptation des conditions",
+      "content": "En accedant ou en utilisant StoryTub, vous acceptez d'etre lie par ces conditions d'utilisation. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre service."
+    },
+    "accounts": {
+      "title": "2. Comptes utilisateurs",
+      "content": "Vous etes responsable de la confidentialite de vos identifiants de compte. Vous devez fournir des informations exactes lors de la creation de votre compte."
+    },
+    "credits": {
+      "title": "3. Credits et paiements",
+      "content": "Les credits sont utilises pour generer des videos. Les credits d'abonnement sont reinitialises a chaque cycle de facturation. Les credits de packs n'expirent pas. Tous les paiements sont traites par Stripe."
+    },
+    "content": {
+      "title": "4. Contenu utilisateur",
+      "content": "Vous conservez la propriete du contenu que vous creez avec StoryTub. Vous etes responsable de vous assurer que votre contenu ne viole aucune loi ni droit de tiers."
+    },
+    "ip": {
+      "title": "5. Propriete intellectuelle",
+      "content": "StoryTub et son contenu original, ses fonctionnalites et sa fonctionnalite sont la propriete de StoryTub et sont proteges par les lois internationales sur le droit d'auteur et les marques."
+    },
+    "prohibited": {
+      "title": "6. Utilisations interdites",
+      "content": "Vous ne pouvez pas utiliser StoryTub pour creer du contenu illegal, nuisible, menaçant, abusif, harcelant, diffamatoire ou autrement reprehensible."
+    },
+    "limitation": {
+      "title": "7. Limitation de responsabilite",
+      "content": "StoryTub ne sera pas responsable des dommages indirects, accessoires, speciaux, consecutifs ou punitifs resultant de votre utilisation du service."
+    },
+    "termination": {
+      "title": "8. Resiliation",
+      "content": "Nous pouvons resilier ou suspendre votre compte a tout moment sans preavis si vous enfreignez ces conditions."
+    },
+    "changes": {
+      "title": "9. Modifications des conditions",
+      "content": "Nous nous reservons le droit de modifier ces conditions a tout moment. L'utilisation continue du service apres les modifications constitue l'acceptation des nouvelles conditions."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "content": "Pour toute question concernant ces conditions, contactez-nous a support@storytub.com."
+    }
+  },
+  "privacy": {
+    "metaTitle": "Politique de confidentialite",
+    "metaDescription": "Politique de confidentialite et pratiques de traitement des donnees de StoryTub.",
+    "title": "Politique de confidentialite",
+    "lastUpdated": "Derniere mise a jour: janvier 2025",
+    "collection": {
+      "title": "1. Informations collectees",
+      "content": "Nous collectons les informations que vous fournissez lors de la creation d'un compte (email, nom), les donnees d'utilisation (videos creees, credits utilises) et les donnees techniques (adresse IP, type de navigateur)."
+    },
+    "usage": {
+      "title": "2. Utilisation de vos informations",
+      "content": "Nous utilisons vos informations pour fournir et ameliorer notre service, traiter les paiements, envoyer des notifications importantes et fournir un support client."
+    },
+    "sharing": {
+      "title": "3. Partage des informations",
+      "content": "Nous ne vendons pas vos informations personnelles. Nous pouvons partager des donnees avec des fournisseurs de services (Stripe pour les paiements, Supabase pour l'hebergement) qui nous aident a exploiter la plateforme."
+    },
+    "cookies": {
+      "title": "4. Cookies",
+      "content": "Nous utilisons des cookies essentiels pour l'authentification et les preferences. Nous utilisons egalement des cookies d'analyse pour comprendre l'utilisation de notre service. Vous pouvez gerer vos preferences de cookies."
+    },
+    "security": {
+      "title": "5. Securite des donnees",
+      "content": "Nous mettons en oeuvre des mesures de securite standard pour proteger vos donnees, y compris le chiffrement en transit et au repos."
+    },
+    "retention": {
+      "title": "6. Conservation des donnees",
+      "content": "Nous conservons vos donnees tant que votre compte est actif. Vous pouvez demander la suppression de votre compte et des donnees associees a tout moment."
+    },
+    "rights": {
+      "title": "7. Vos droits",
+      "content": "Vous avez le droit d'acceder, de corriger ou de supprimer vos donnees personnelles. Vous pouvez egalement demander une copie de vos donnees ou restreindre leur traitement."
+    },
+    "children": {
+      "title": "8. Confidentialite des enfants",
+      "content": "StoryTub n'est pas destine aux enfants de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnelles aupres d'enfants."
+    },
+    "changes": {
+      "title": "9. Modifications de cette politique",
+      "content": "Nous pouvons mettre a jour cette politique de temps a autre. Nous vous informerons des modifications significatives par email ou notification dans l'application."
+    },
+    "contact": {
+      "title": "10. Contact",
+      "content": "Pour toute question relative a la confidentialite, contactez-nous a support@storytub.com."
+    }
+  },
+  "blog": {
+    "metaTitle": "Blog",
+    "metaDescription": "Lisez les derniers articles sur la creation de videos par IA, la strategie de contenu et plus encore.",
+    "title": "Blog",
+    "noPosts": "Aucun article publie pour le moment. Revenez bientot!",
+    "categories": "Categories",
+    "allCategories": "Toutes",
+    "tags": "Tags",
+    "postNotFound": "Article introuvable.",
+    "backToBlog": "Retour au blog",
+    "relatedPosts": "Articles associes"
+  },
+  "support": {
+    "title": "Support",
+    "newTicket": "Nouveau ticket",
+    "subject": "Sujet",
+    "category": "Categorie",
+    "priority": "Priorite",
+    "message": "Message",
+    "send": "Envoyer",
+    "sending": "Envoi en cours...",
+    "backToTickets": "Retour aux tickets",
+    "noTickets": "Aucun ticket de support pour le moment.",
+    "replyPlaceholder": "Tapez votre reponse...",
+    "staff": "Equipe support",
+    "you": "Vous",
+    "cat_billing": "Facturation",
+    "cat_technical": "Technique",
+    "cat_account": "Compte",
+    "cat_feature_request": "Demande de fonctionnalite",
+    "cat_bug_report": "Rapport de bug",
+    "priority_low": "Faible",
+    "priority_normal": "Normal",
+    "priority_high": "Elevee",
+    "status_open": "Ouvert",
+    "status_in_progress": "En cours",
+    "status_waiting": "En attente",
+    "status_resolved": "Resolu",
+    "status_closed": "Ferme"
+  },
+  "cookie": {
+    "message": "Nous utilisons des cookies pour ameliorer votre experience. En continuant a utiliser ce site, vous consentez a notre utilisation des cookies.",
+    "learnMore": "En savoir plus",
+    "accept": "Accepter",
+    "decline": "Refuser"
+  },
+  "policy": {
+    "title": "Conditions et confidentialite",
+    "description": "Veuillez consulter et accepter nos conditions d'utilisation et notre politique de confidentialite pour continuer a utiliser StoryTub.",
+    "viewTerms": "Voir les conditions d'utilisation",
+    "viewPrivacy": "Voir la politique de confidentialite",
+    "accept": "J'accepte",
+    "accepting": "Traitement..."
+  },
+  "notifications": {
+    "title": "Notifications",
+    "markAllRead": "Tout marquer comme lu",
+    "markRead": "Marquer comme lu",
+    "empty": "Aucune notification pour le moment.",
+    "delete": "Supprimer"
+  },
+  "profile": {
+    "title": "Profil",
+    "displayName": "Nom d'affichage",
+    "displayNamePlaceholder": "Votre nom",
+    "avatarUrl": "URL de l'avatar",
+    "email": "Email",
+    "plan": "Forfait",
+    "save": "Enregistrer",
+    "saving": "Enregistrement...",
+    "saved": "Profil mis a jour!"
+  },
+  "settings": {
+    "title": "Parametres",
+    "language": "Langue",
+    "account": "Compte",
+    "logout": "Deconnexion",
+    "dangerZone": "Zone de danger",
+    "deleteDescription": "Supprimez definitivement votre compte et toutes les donnees associees. Cette action est irreversible.",
+    "deleteAccount": "Supprimer le compte",
+    "confirmDelete": "Voulez-vous vraiment supprimer votre compte? Cette action est irreversible."
   }
 }
