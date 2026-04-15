@@ -325,9 +325,18 @@
     "subtitle": "Utilisez l'une des suggestions ci-dessous ou entrez votre propre sujet",
     "inputPlaceholder": "Demandez ce que vous voulez...",
     "scopeAll": "Tout le Web",
-    "addAttachment": "Ajouter un fichier",
-    "useImage": "Utiliser une image",
     "send": "Envoyer",
+    "styleDefault": "Standard",
+    "styles": {
+      "poetic": "Poetique",
+      "scientific": "Scientifique",
+      "artistic": "Artistique",
+      "mathematical": "Mathematique",
+      "political": "Politique",
+      "humorous": "Humoristique",
+      "dramatic": "Dramatique",
+      "educational": "Educatif"
+    },
     "prompts": {
       "personal": "Creer une histoire sur ma routine quotidienne",
       "email": "Resumer les actualites de la semaine",

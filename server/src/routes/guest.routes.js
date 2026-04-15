@@ -1,6 +1,6 @@
 import { createSession, checkRateLimit } from "../services/guest.service.js";
 import { calculateCredits } from "../services/credit.service.js";
-import { videoQueue } from "../jobs/queues.js";
+import { getVideoQueue } from "../jobs/queues.js";
 import supabase from "../config/supabase.js";
 import { Errors } from "../lib/errors.js";
 
@@ -119,14 +119,29 @@ export default async function guestRoutes(app) {
       throw Errors.badRequest("Could not start video generation");
     }
 
-    // Enqueue video job
-    await videoQueue.add(
-      "generate",
-      { videoId: video.id },
-      {
-        priority: 10, // lower priority than paid users
-      },
-    );
+    // Enqueue video job (graceful when Redis is unavailable)
+    const queue = getVideoQueue();
+    if (queue) {
+      try {
+        await queue.add(
+          "generate",
+          { videoId: video.id },
+          {
+            priority: 10, // lower priority than paid users
+          },
+        );
+      } catch (queueErr) {
+        request.log.warn(
+          { err: queueErr },
+          "Failed to enqueue guest video job",
+        );
+      }
+    } else {
+      request.log.warn(
+        { videoId: video.id },
+        "Redis unavailable — guest video queued in DB only",
+      );
+    }
 
     return reply.status(202).send({
       video_id: video.id,

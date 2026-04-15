@@ -2,7 +2,7 @@ import nodemailer from "nodemailer";
 import env from "../config/env.js";
 import supabase from "../config/supabase.js";
 import logger from "../lib/logger.js";
-import { emailQueue } from "../jobs/queues.js";
+import { getEmailQueue } from "../jobs/queues.js";
 import { Errors } from "../lib/errors.js";
 
 const DEFAULT_TEMPLATES = {
@@ -228,11 +228,16 @@ export async function enqueueEmailLog(emailLogId) {
 
   await updateEmailLogMetadata(emailLogId, nextMetadata);
 
-  await emailQueue.add(
-    "send-email",
-    { emailLogId },
-    { jobId: `email:${emailLogId}` },
-  );
+  const eq = getEmailQueue();
+  if (eq) {
+    await eq.add(
+      "send-email",
+      { emailLogId },
+      { jobId: `email-${emailLogId}` },
+    );
+  } else {
+    logger.warn({ emailLogId }, "Email queue unavailable — email not sent");
+  }
 
   return emailLogId;
 }

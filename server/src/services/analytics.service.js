@@ -1,7 +1,7 @@
 import supabase from "../config/supabase.js";
 import redis from "../config/redis.js";
 import logger from "../lib/logger.js";
-import { videoQueue, emailQueue } from "../jobs/queues.js";
+import { getVideoQueue, getEmailQueue } from "../jobs/queues.js";
 import { queueCampaignSend } from "./email.service.js";
 
 function startOfDay(date) {
@@ -347,22 +347,30 @@ export async function getMonitoringOverview() {
   let queueCounts = { video: null, email: null };
 
   try {
-    const pong = await redis.ping();
-    redisStatus = pong === "PONG" ? "ok" : "degraded";
-    queueCounts.video = await videoQueue.getJobCounts(
-      "waiting",
-      "active",
-      "completed",
-      "failed",
-      "delayed",
-    );
-    queueCounts.email = await emailQueue.getJobCounts(
-      "waiting",
-      "active",
-      "completed",
-      "failed",
-      "delayed",
-    );
+    if (redis) {
+      const pong = await redis.ping();
+      redisStatus = pong === "PONG" ? "ok" : "degraded";
+    }
+    const vq = getVideoQueue();
+    const eq = getEmailQueue();
+    if (vq) {
+      queueCounts.video = await vq.getJobCounts(
+        "waiting",
+        "active",
+        "completed",
+        "failed",
+        "delayed",
+      );
+    }
+    if (eq) {
+      queueCounts.email = await eq.getJobCounts(
+        "waiting",
+        "active",
+        "completed",
+        "failed",
+        "delayed",
+      );
+    }
   } catch (error) {
     logger.warn({ error }, "Monitoring queue check failed");
   }

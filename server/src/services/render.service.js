@@ -1,17 +1,190 @@
+import { spawn } from "node:child_process";
+import { writeFile, readFile, mkdir, rm } from "node:fs/promises";
+import { join } from "node:path";
+import { tmpdir } from "node:os";
+import ffmpegPath from "@ffmpeg-installer/ffmpeg";
+import ffprobePath from "@ffprobe-installer/ffprobe";
 import supabase from "../config/supabase.js";
 import logger from "../lib/logger.js";
-import { randomUUID } from "node:crypto";
+
+const FFMPEG = ffmpegPath.path;
+const FFPROBE = ffprobePath.path;
+const WIDTH = 1080;
+const HEIGHT = 1920;
+const FPS = 30;
 
 /**
- * Trigger a Remotion server-side render.
- *
- * In production this calls the Remotion rendering service (e.g. @remotion/lambda
- * or a self-hosted Remotion render process). For now, this is the integration point
- * that the rendering worker will call.
- *
- * Expected contract: POST to a Remotion render endpoint OR call renderMedia() directly
- * in the same process if running co-located. The actual Remotion setup (React compositions,
- * FFmpeg, Chromium) will live in a separate renderer package.
+ * Run an FFmpeg/FFprobe command and return stdout.
+ */
+function runCmd(bin, args) {
+  return new Promise((resolve, reject) => {
+    const proc = spawn(bin, args, { stdio: ["pipe", "pipe", "pipe"] });
+    const chunks = [];
+    const errChunks = [];
+    proc.stdout.on("data", (d) => chunks.push(d));
+    proc.stderr.on("data", (d) => errChunks.push(d));
+    proc.on("close", (code) => {
+      if (code !== 0) {
+        const stderr = Buffer.concat(errChunks).toString().slice(-1000);
+        reject(new Error(`${bin} exited with code ${code}: ${stderr}`));
+      } else {
+        resolve(Buffer.concat(chunks));
+      }
+    });
+    proc.on("error", reject);
+  });
+}
+
+/**
+ * Get audio duration in seconds via ffprobe.
+ */
+async function getAudioDuration(filePath) {
+  const out = await runCmd(FFPROBE, [
+    "-v",
+    "quiet",
+    "-show_entries",
+    "format=duration",
+    "-of",
+    "csv=p=0",
+    filePath,
+  ]);
+  return parseFloat(out.toString().trim());
+}
+
+/**
+ * Download a file from URL to local path.
+ */
+async function downloadFile(url, destPath) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Failed to download ${url}: ${res.status}`);
+  const buffer = Buffer.from(await res.arrayBuffer());
+  await writeFile(destPath, buffer);
+}
+
+/**
+ * Generate ASS subtitle file from word timestamps.
+ * Uses karaoke-style word highlighting for professional captions.
+ */
+function generateASS(scenes, sceneOffsets) {
+  const header = `[Script Info]
+Title: StoryTub Captions
+ScriptType: v4.00+
+PlayResX: ${WIDTH}
+PlayResY: ${HEIGHT}
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Default,Arial,72,&H00FFFFFF,&H0000FFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,2,2,40,40,180,1
+Style: Highlight,Arial,76,&H0000FFFF,&H00FFFFFF,&H00000000,&H80000000,-1,0,0,0,100,100,0,0,1,4,2,2,40,40,180,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+`;
+
+  const lines = [];
+
+  for (let i = 0; i < scenes.length; i++) {
+    const scene = scenes[i];
+    const offset = sceneOffsets[i];
+    const words = scene.word_timestamps || [];
+
+    if (words.length === 0) continue;
+
+    // Group words into chunks of 3-4 for display
+    const chunks = [];
+    for (let w = 0; w < words.length; w += 3) {
+      chunks.push(words.slice(w, w + 3));
+    }
+
+    for (const chunk of chunks) {
+      const chunkStart = offset + chunk[0].start;
+      const chunkEnd = offset + chunk[chunk.length - 1].end + 0.1;
+
+      // Build karaoke text with \k tags
+      let karaText = "";
+      for (const word of chunk) {
+        const durCs = Math.round((word.end - word.start) * 100);
+        karaText += `{\\kf${durCs}}${word.word} `;
+      }
+
+      const startTS = formatASSTime(chunkStart);
+      const endTS = formatASSTime(chunkEnd);
+      lines.push(
+        `Dialogue: 0,${startTS},${endTS},Default,,0,0,0,,${karaText.trim()}`,
+      );
+    }
+  }
+
+  return header + lines.join("\n") + "\n";
+}
+
+/**
+ * Format seconds to ASS timestamp (H:MM:SS.CC).
+ */
+function formatASSTime(seconds) {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  return `${h}:${String(m).padStart(2, "0")}:${s.toFixed(2).padStart(5, "0")}`;
+}
+
+/**
+ * Render a single scene: image + Ken Burns effect + audio → .ts clip.
+ */
+async function renderSceneClip(scene, workDir, sceneIdx) {
+  const imgPath = join(workDir, `scene_${sceneIdx}.jpg`);
+  const audioPath = join(workDir, `scene_${sceneIdx}.wav`);
+  const clipPath = join(workDir, `clip_${sceneIdx}.ts`);
+
+  // Get audio duration to set video length
+  const duration = await getAudioDuration(audioPath);
+  const frames = Math.ceil(duration * FPS);
+
+  // Alternate between zoom-in and zoom-out Ken Burns effect
+  const zoomIn = sceneIdx % 2 === 0;
+  const zoomFilter = zoomIn
+    ? `zoompan=z='min(zoom+0.0008,1.3)':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=${WIDTH}x${HEIGHT}:fps=${FPS}`
+    : `zoompan=z='if(eq(on,1),1.3,max(zoom-0.0008,1.0))':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=${frames}:s=${WIDTH}x${HEIGHT}:fps=${FPS}`;
+
+  const args = [
+    "-y",
+    "-loop",
+    "1",
+    "-t",
+    String(duration + 0.5),
+    "-i",
+    imgPath,
+    "-i",
+    audioPath,
+    "-filter_complex",
+    `[0]scale=${WIDTH * 2}:${HEIGHT * 2}:force_original_aspect_ratio=increase,crop=${WIDTH * 2}:${HEIGHT * 2},${zoomFilter}[v]`,
+    "-map",
+    "[v]",
+    "-map",
+    "1:a",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "fast",
+    "-crf",
+    "23",
+    "-c:a",
+    "aac",
+    "-b:a",
+    "128k",
+    "-shortest",
+    "-f",
+    "mpegts",
+    clipPath,
+  ];
+
+  await runCmd(FFMPEG, args);
+  return { clipPath, duration };
+}
+
+/**
+ * Render the full video: all scenes → Ken Burns clips → concatenate → burn captions.
  *
  * @param {object} params
  * @param {string} params.videoId
@@ -19,7 +192,7 @@ import { randomUUID } from "node:crypto";
  * @param {string} params.resolution
  * @param {Array}  params.scenes - Scenes with image_url, audio_buffer, word_timestamps
  * @param {'en'|'fr'} params.language
- * @returns {{ filePath: string, durationSeconds: number, fileSizeBytes: number }}
+ * @returns {{ fileBuffer: Buffer, durationSeconds: number, fileSizeBytes: number }}
  */
 export async function renderVideo({
   videoId,
@@ -28,41 +201,116 @@ export async function renderVideo({
   scenes,
   language,
 }) {
+  const workDir = join(tmpdir(), `storytub-render-${videoId}`);
+  await mkdir(workDir, { recursive: true });
+
   logger.info(
-    { videoId, templateId, sceneCount: scenes.length },
-    "Render: starting",
+    { videoId, templateId, sceneCount: scenes.length, workDir },
+    "Render: starting FFmpeg pipeline",
   );
 
-  // ── Prepare scene data for Remotion (strip buffers, keep metadata) ──
-  const renderScenes = scenes.map((s) => ({
-    scene_number: s.scene_number,
-    text: s.text,
-    image_url: s.image_url,
-    word_timestamps: s.word_timestamps,
-    estimated_duration_seconds: s.estimated_duration_seconds,
-  }));
+  try {
+    // ── 1. Download images & save audio files ──
+    await Promise.all(
+      scenes.map(async (scene, i) => {
+        const imgPath = join(workDir, `scene_${i}.jpg`);
+        const audioPath = join(workDir, `scene_${i}.wav`);
 
-  //
-  // TODO: Replace with actual Remotion renderMedia() call.
-  // This is the integration point where the Remotion rendering package
-  // will be called. For now, we log and throw so the worker retries
-  // don't silently succeed without a real render.
-  //
-  // Example integration:
-  //   import { bundle } from '@remotion/bundler';
-  //   import { renderMedia } from '@remotion/renderer';
-  //   const bundled = await bundle(path.resolve('remotion/index.ts'));
-  //   await renderMedia({
-  //     composition,
-  //     serveUrl: bundled,
-  //     codec: 'h264',
-  //     outputLocation: outputPath,
-  //     inputProps: { scenes: renderScenes, language },
-  //   });
-  //
-  throw new Error(
-    "RENDER_NOT_IMPLEMENTED: Remotion rendering package not yet integrated",
-  );
+        await downloadFile(scene.image_url, imgPath);
+        await writeFile(audioPath, scene.audio_buffer);
+      }),
+    );
+
+    logger.info({ videoId }, "Render: assets downloaded");
+
+    // ── 2. Render per-scene clips in parallel (max 3 at a time) ──
+    const sceneDurations = [];
+    const clipPaths = [];
+
+    // Process 3 scenes at a time to limit CPU usage
+    for (let batch = 0; batch < scenes.length; batch += 3) {
+      const batchScenes = scenes.slice(batch, batch + 3);
+      const results = await Promise.all(
+        batchScenes.map((scene, j) =>
+          renderSceneClip(scene, workDir, batch + j),
+        ),
+      );
+      for (const r of results) {
+        clipPaths.push(r.clipPath);
+        sceneDurations.push(r.duration);
+      }
+    }
+
+    logger.info(
+      { videoId, clips: clipPaths.length },
+      "Render: scene clips created",
+    );
+
+    // ── 3. Calculate offsets for subtitle timing ──
+    const sceneOffsets = [];
+    let cumulative = 0;
+    for (const d of sceneDurations) {
+      sceneOffsets.push(cumulative);
+      cumulative += d;
+    }
+
+    // ── 4. Generate ASS subtitles ──
+    const assPath = join(workDir, "captions.ass");
+    const assContent = generateASS(scenes, sceneOffsets);
+    await writeFile(assPath, assContent);
+
+    // ── 5. Create concat list ──
+    const concatListPath = join(workDir, "concat.txt");
+    const concatContent = clipPaths
+      .map((p) => `file '${p.replace(/\\/g, "/")}'`)
+      .join("\n");
+    await writeFile(concatListPath, concatContent);
+
+    // ── 6. Final render: concatenate + burn subtitles ──
+    const outputPath = join(workDir, `${videoId}.mp4`);
+
+    // Escape backslashes for ASS filter path on Windows
+    const assFilterPath = assPath.replace(/\\/g, "/").replace(/:/g, "\\:");
+
+    await runCmd(FFMPEG, [
+      "-y",
+      "-f",
+      "concat",
+      "-safe",
+      "0",
+      "-i",
+      concatListPath,
+      "-vf",
+      `ass='${assFilterPath}'`,
+      "-c:v",
+      "libx264",
+      "-preset",
+      "medium",
+      "-crf",
+      "23",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "128k",
+      "-movflags",
+      "+faststart",
+      outputPath,
+    ]);
+
+    logger.info({ videoId }, "Render: final video encoded");
+
+    const fileBuffer = await readFile(outputPath);
+    const totalDuration = sceneDurations.reduce((a, b) => a + b, 0);
+
+    return {
+      fileBuffer,
+      durationSeconds: Math.round(totalDuration * 100) / 100,
+      fileSizeBytes: fileBuffer.length,
+    };
+  } finally {
+    // Cleanup temp directory
+    await rm(workDir, { recursive: true, force: true }).catch(() => {});
+  }
 }
 
 /**

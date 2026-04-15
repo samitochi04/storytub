@@ -1,4 +1,5 @@
 import { api } from "@/config/api";
+import { supabase } from "@/config/supabase";
 
 /**
  * Start video generation for the authenticated user.
@@ -20,31 +21,45 @@ export function generateVideo({
 }
 
 /**
- * List all videos for the current user.
+ * List all videos for the current user (via Supabase RLS).
  */
-export function listVideos() {
-  return api.get("/videos");
+export async function listVideos() {
+  const { data, error } = await supabase
+    .from("videos")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data;
 }
 
 /**
- * Get a single video by ID.
+ * Get a single video by ID (via Supabase RLS).
  */
-export function getVideo(id) {
-  return api.get(`/videos/${id}`);
+export async function getVideo(id) {
+  const { data, error } = await supabase
+    .from("videos")
+    .select("*")
+    .eq("id", id)
+    .single();
+  if (error) throw error;
+  return data;
 }
 
 /**
  * Get a signed download URL for a video.
  */
-export function getDownloadUrl(id) {
-  return api.get(`/videos/${id}/download`);
+export async function getDownloadUrl(id) {
+  const video = await getVideo(id);
+  if (!video?.video_url) throw new Error("Video not ready for download");
+  return { url: video.video_url };
 }
 
 /**
- * Delete a video.
+ * Delete a video (via Supabase RLS).
  */
-export function deleteVideo(id) {
-  return api.delete(`/videos/${id}`);
+export async function deleteVideo(id) {
+  const { error } = await supabase.from("videos").delete().eq("id", id);
+  if (error) throw error;
 }
 
 /**
@@ -55,17 +70,32 @@ export function retryVideo(id) {
 }
 
 /**
- * List available templates (from Supabase templates table).
+ * List available templates (via Supabase).
  */
-export function listTemplates() {
-  return api.get("/templates");
+export async function listTemplates() {
+  const { data, error } = await supabase
+    .from("templates")
+    .select("*")
+    .eq("is_active", true)
+    .order("sort_order", { ascending: true });
+  if (error) throw error;
+  return data;
 }
 
 /**
  * List available voices for the current user.
+ * Falls back to built-in default voices if the API is unavailable.
  */
-export function listVoices() {
-  return api.get("/voices");
+export async function listVoices() {
+  try {
+    const data = await api.get("/voices");
+    const list = Array.isArray(data) ? data : data.voices || [];
+    if (list.length > 0) return list;
+  } catch {
+    // API not available, fall back to defaults
+  }
+  const { DEFAULT_VOICES } = await import("@/config/constants");
+  return DEFAULT_VOICES;
 }
 
 /**

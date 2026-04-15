@@ -5,7 +5,7 @@ import {
   deductCredits,
   refundCredits,
 } from "../services/credit.service.js";
-import { videoQueue } from "../jobs/queues.js";
+import { getVideoQueue } from "../jobs/queues.js";
 
 /** JSON schema for POST /videos/generate */
 const generateSchema = {
@@ -19,7 +19,7 @@ const generateSchema = {
       "target_duration",
     ],
     properties: {
-      topic: { type: "string", minLength: 3, maxLength: 500 },
+      topic: { type: "string", minLength: 3, maxLength: 1100 },
       language: { type: "string", enum: ["en", "fr"] },
       template_id: { type: "string", minLength: 1 },
       voice_id: { type: "string", minLength: 1 },
@@ -98,14 +98,23 @@ export default async function videoRoutes(app) {
         );
       }
 
-      // Enqueue video job with higher priority for paid users
-      await videoQueue.add(
-        "generate",
-        { videoId: video.id },
-        {
-          priority: 1,
-        },
-      );
+      // Enqueue video job (graceful when Redis is unavailable)
+      const queue = getVideoQueue();
+      if (queue) {
+        try {
+          await queue.add("generate", { videoId: video.id }, { priority: 1 });
+        } catch (queueErr) {
+          request.log.warn(
+            { err: queueErr },
+            "Failed to enqueue video job — Redis may be down",
+          );
+        }
+      } else {
+        request.log.warn(
+          { videoId: video.id },
+          "Redis unavailable — video queued in DB but not in BullMQ",
+        );
+      }
 
       return reply.status(202).send({
         video_id: video.id,
@@ -163,8 +172,15 @@ export default async function videoRoutes(app) {
         })
         .eq("id", videoId);
 
-      // Re-enqueue
-      await videoQueue.add("generate", { videoId }, { priority: 1 });
+      // Re-enqueue (graceful when Redis is unavailable)
+      const retryQueue = getVideoQueue();
+      if (retryQueue) {
+        try {
+          await retryQueue.add("generate", { videoId }, { priority: 1 });
+        } catch (queueErr) {
+          request.log.warn({ err: queueErr }, "Failed to enqueue retry job");
+        }
+      }
 
       return reply.status(202).send({
         video_id: videoId,

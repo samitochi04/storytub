@@ -5,15 +5,31 @@ const PIXABAY_BASE = "https://pixabay.com/api/";
 const UNSPLASH_BASE = "https://api.unsplash.com";
 
 /**
+ * Sanitize AI-generated image queries for stock photo APIs.
+ * APIs expect short keyword-based queries, not long descriptions.
+ */
+function sanitizeQuery(query) {
+  return query
+    .replace(/['"]/g, "") // remove quotes
+    .replace(/[^a-zA-Z0-9\s]/g, " ") // strip special chars
+    .replace(/\s+/g, " ") // collapse whitespace
+    .trim()
+    .split(" ")
+    .slice(0, 6) // max 6 words
+    .join(" ");
+}
+
+/**
  * Search Pixabay for an image.
  * @returns {string|null} Image URL or null
  */
 async function searchPixabay(query, lang = "en") {
   if (!env.pixabayApiKey) return null;
 
+  const cleanQuery = sanitizeQuery(query);
   const params = new URLSearchParams({
     key: env.pixabayApiKey,
-    q: query,
+    q: cleanQuery,
     lang: lang === "fr" ? "fr" : "en",
     image_type: "photo",
     orientation: "vertical",
@@ -42,8 +58,9 @@ async function searchPixabay(query, lang = "en") {
 async function searchUnsplash(query) {
   if (!env.unsplashAccessKey) return null;
 
+  const cleanQuery = sanitizeQuery(query);
   const params = new URLSearchParams({
-    query,
+    query: cleanQuery,
     orientation: "portrait",
     per_page: "5",
   });

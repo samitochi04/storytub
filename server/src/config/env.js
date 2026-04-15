@@ -5,7 +5,6 @@ const REQUIRED = [
   "SUPABASE_URL",
   "SUPABASE_SERVICE_ROLE_KEY",
   "SUPABASE_JWT_SECRET",
-  "REDIS_URL",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
   "GEMINI_API_KEY",
@@ -60,7 +59,7 @@ const env = Object.freeze({
   unsplashAccessKey: process.env.UNSPLASH_ACCESS_KEY || "",
 
   // Self-hosted AI
-  kokoroTtsUrl: process.env.KOKORO_TTS_URL || "http://127.0.0.1:8100",
+  kokoroTtsUrl: process.env.KOKORO_TTS_URL || "http://127.0.0.1:8880",
   openvoiceUrl: process.env.OPENVOICE_URL || "http://127.0.0.1:8101",
   whisperUrl: process.env.WHISPER_URL || "http://127.0.0.1:8102",
 

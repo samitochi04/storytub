@@ -90,7 +90,7 @@ export async function runPipeline(video) {
     await updateVideoStatus(videoId, "completed", {
       video_url: videoUrl,
       thumbnail_url: thumbnailUrl,
-      duration_seconds: rendered.durationSeconds,
+      duration_seconds: Math.round(rendered.durationSeconds),
       file_size_bytes: rendered.fileSizeBytes,
     });
 

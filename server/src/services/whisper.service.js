@@ -2,12 +2,10 @@ import env from "../config/env.js";
 import logger from "../lib/logger.js";
 
 /**
- * Extract word-level timestamps from an audio buffer via self-hosted faster-whisper.
+ * Extract word-level timestamps from an audio buffer via faster-whisper-server.
  *
- * Expected API contract:
- *   POST /transcribe
- *   Body: multipart/form-data { audio (wav) }
- *   Response JSON: { words: [{ word, start, end }] }
+ * Uses the OpenAI-compatible /v1/audio/transcriptions endpoint.
+ * Docker: fedirz/faster-whisper-server on port 8102
  *
  * @param {Buffer} audioBuffer - WAV audio
  * @returns {Array<{ word: string, start: number, end: number }>}
@@ -17,12 +15,15 @@ export async function extractTimestamps(audioBuffer) {
 
   const form = new FormData();
   form.append(
-    "audio",
+    "file",
     new Blob([audioBuffer], { type: "audio/wav" }),
     "audio.wav",
   );
+  form.append("model", "Systran/faster-whisper-small");
+  form.append("response_format", "verbose_json");
+  form.append("timestamp_granularities[]", "word");
 
-  const res = await fetch(`${env.whisperUrl}/transcribe`, {
+  const res = await fetch(`${env.whisperUrl}/v1/audio/transcriptions`, {
     method: "POST",
     body: form,
   });

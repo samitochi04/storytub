@@ -32,6 +32,39 @@ export const PLAN_LIMITS = {
 
 export const PROMPT_MAX_LENGTH = 1000;
 
+export const DEFAULT_VOICES = [
+  {
+    id: "af_heart",
+    name: "Heart (EN Female)",
+    language: "en",
+    is_cloned: false,
+  },
+  { id: "am_adam", name: "Adam (EN Male)", language: "en", is_cloned: false },
+  {
+    id: "ff_siwis",
+    name: "Siwis (FR Female)",
+    language: "fr",
+    is_cloned: false,
+  },
+  {
+    id: "fm_marcus",
+    name: "Marcus (FR Male)",
+    language: "fr",
+    is_cloned: false,
+  },
+];
+
+export const CONTENT_STYLES = [
+  "poetic",
+  "scientific",
+  "artistic",
+  "mathematical",
+  "political",
+  "humorous",
+  "dramatic",
+  "educational",
+];
+
 export const SUPPORTED_LANGUAGES = [
   { value: "en", label: "English" },
   { value: "fr", label: "Français" },

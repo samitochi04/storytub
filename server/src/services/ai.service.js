@@ -16,7 +16,8 @@ RULES:
 - Template style: "${templateId}"
 - Target total duration: ${targetDuration} seconds
 - Split into scenes of 4-7 seconds each
-- Each scene has narration text and an image search query (always in English for better stock photo results)
+- Each scene has narration text and an image search query (always in English, max 4-5 keywords for stock photo search)
+- Image queries must be simple keyword phrases like "neural network abstract" or "person using smartphone" — NOT long descriptions
 - The script should be engaging, punchy, and optimized for social media retention
 - Start with a hook that grabs attention in the first 3 seconds
 - End with a memorable conclusion or call-to-action

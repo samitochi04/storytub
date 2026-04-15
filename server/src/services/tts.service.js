@@ -2,12 +2,10 @@ import env from "../config/env.js";
 import logger from "../lib/logger.js";
 
 /**
- * Generate speech audio for a single scene via self-hosted Kokoro TTS.
+ * Generate speech audio for a single scene via Kokoro-FastAPI (OpenAI-compatible).
  *
- * Expected API contract (Kokoro HTTP wrapper):
- *   POST /tts
- *   Body: { text, voice_id, language }
- *   Response: audio/wav binary
+ * Uses the OpenAI-compatible /v1/audio/speech endpoint exposed by Kokoro-FastAPI.
+ * Docker: ghcr.io/remsky/kokoro-fastapi-cpu on port 8880
  *
  * @param {string} text - Scene narration text
  * @param {string} voiceId - Kokoro voice preset ID (e.g. "af_heart", "ff_siwis")
@@ -15,20 +13,22 @@ import logger from "../lib/logger.js";
  * @returns {Buffer} WAV audio buffer
  */
 export async function generateSpeech(text, voiceId, language) {
-  const langCode = language === "fr" ? "f" : "a";
-
   logger.info(
     { voiceId, language, textLen: text.length },
     "TTS: generating speech",
   );
 
-  const res = await fetch(`${env.kokoroTtsUrl}/tts`, {
+  const res = await fetch(`${env.kokoroTtsUrl}/v1/audio/speech`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer not-needed",
+    },
     body: JSON.stringify({
-      text,
-      voice_id: voiceId,
-      language: langCode,
+      model: "kokoro",
+      voice: voiceId,
+      input: text,
+      response_format: "wav",
     }),
   });
 

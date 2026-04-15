@@ -325,9 +325,18 @@
     "subtitle": "Use one of the most common prompts below or use your own to begin",
     "inputPlaceholder": "Ask whatever you want...",
     "scopeAll": "All Web",
-    "addAttachment": "Add Attachment",
-    "useImage": "Use Image",
     "send": "Send",
+    "styleDefault": "Standard",
+    "styles": {
+      "poetic": "Poetic",
+      "scientific": "Scientific",
+      "artistic": "Artistic",
+      "mathematical": "Mathematical",
+      "political": "Political",
+      "humorous": "Humorous",
+      "dramatic": "Dramatic",
+      "educational": "Educational"
+    },
     "prompts": {
       "personal": "Create a story about my daily routine",
       "email": "Summarize this week's top news",
