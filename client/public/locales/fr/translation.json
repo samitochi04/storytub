@@ -267,5 +267,69 @@
     "noVoices": "Aucune voix disponible",
     "cloned": "Clonee",
     "confirmDelete": "Voulez-vous vraiment supprimer cette voix?"
+  },
+  "credits": {
+    "balance": "Solde de credits"
+  },
+  "pricing": {
+    "seoTitle": "Tarifs",
+    "seoDescription": "Plans et tarifs StoryTub. Commencez gratuitement, passez a un forfait superieur a tout moment.",
+    "title": "Des tarifs simples et transparents",
+    "subtitle": "Commencez gratuitement, passez a un forfait superieur quand vous en avez besoin",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "free": "Gratuit",
+    "month": "mois",
+    "year": "an",
+    "credits": "credits",
+    "creditUnit": "credit",
+    "creditsPerMonth": "credits/mois",
+    "popular": "Le plus populaire",
+    "currentPlan": "Forfait actuel",
+    "getStarted": "Commencer",
+    "subscribe": "S'abonner",
+    "buyBundle": "Acheter des credits",
+    "bundlesTitle": "Besoin de plus de credits?",
+    "bundlesSubtitle": "Packs de credits a l'unite. Sans expiration.",
+    "faqTitle": "Questions frequentes",
+    "faq": {
+      "q1": "Puis-je essayer StoryTub gratuitement?",
+      "a1": "Oui! Chaque nouveau compte recoit 5 000 credits gratuits pour generer des videos. Aucune carte de credit requise.",
+      "q2": "Que se passe-t-il quand je n'ai plus de credits?",
+      "a2": "Vous pouvez passer a un forfait superieur pour des credits mensuels ou acheter un pack de credits.",
+      "q3": "Puis-je annuler mon abonnement a tout moment?",
+      "a3": "Oui. Vous pouvez annuler a tout moment depuis votre page de facturation. Vous conservez l'acces jusqu'a la fin de votre periode de facturation.",
+      "q4": "Les credits non utilises sont-ils reportes?",
+      "a4": "Les credits des packs n'expirent jamais. Les credits d'abonnement sont reinitialises a chaque cycle de facturation.",
+      "q5": "Quels moyens de paiement sont acceptes?",
+      "a5": "Nous acceptons toutes les cartes de credit, cartes de debit et Apple Pay via Stripe."
+    }
+  },
+  "billing": {
+    "title": "Facturation",
+    "currentPlan": "Forfait actuel",
+    "creditsPerMonth": "credits/mois",
+    "upgrade": "Passer a un forfait superieur",
+    "changePlan": "Changer de forfait",
+    "manageSubscription": "Gerer l'abonnement",
+    "creditsBalance": "Solde de credits",
+    "buyCredits": "Acheter plus de credits",
+    "couponTitle": "Utiliser un coupon",
+    "couponPlaceholder": "Entrez le code du coupon",
+    "redeem": "Utiliser",
+    "discountApplied": "de reduction appliquee",
+    "transactionHistory": "Historique des transactions",
+    "noTransactions": "Aucune transaction pour le moment",
+    "checkoutSuccess": "Paiement reussi! Vos credits ont ete mis a jour.",
+    "checkoutCanceled": "Le paiement a ete annule. Aucun frais n'a ete preleve.",
+    "txType": {
+      "signup_bonus": "Bonus d'inscription",
+      "subscription": "Credits d'abonnement",
+      "bundle": "Pack de credits",
+      "video_generation": "Generation de video",
+      "refund": "Remboursement",
+      "coupon": "Bonus coupon",
+      "admin_adjustment": "Ajustement admin"
+    }
   }
 }

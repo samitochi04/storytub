@@ -267,5 +267,69 @@
     "noVoices": "No voices available",
     "cloned": "Cloned",
     "confirmDelete": "Are you sure you want to delete this voice?"
+  },
+  "credits": {
+    "balance": "Credits balance"
+  },
+  "pricing": {
+    "seoTitle": "Pricing",
+    "seoDescription": "StoryTub plans and pricing. Start free, upgrade anytime.",
+    "title": "Simple, transparent pricing",
+    "subtitle": "Start free, upgrade when you need more",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "free": "Free",
+    "month": "mo",
+    "year": "yr",
+    "credits": "credits",
+    "creditUnit": "credit",
+    "creditsPerMonth": "credits/month",
+    "popular": "Most popular",
+    "currentPlan": "Current plan",
+    "getStarted": "Get started",
+    "subscribe": "Subscribe",
+    "buyBundle": "Buy credits",
+    "bundlesTitle": "Need more credits?",
+    "bundlesSubtitle": "One time credit packs. No expiry.",
+    "faqTitle": "Frequently asked questions",
+    "faq": {
+      "q1": "Can I try StoryTub for free?",
+      "a1": "Yes! Every new account gets 5,000 free credits to generate videos. No credit card required.",
+      "q2": "What happens when I run out of credits?",
+      "a2": "You can upgrade your plan for monthly credits or purchase a one time credit bundle.",
+      "q3": "Can I cancel my subscription anytime?",
+      "a3": "Yes. You can cancel anytime from your billing page. You keep access until the end of your billing period.",
+      "q4": "Do unused credits roll over?",
+      "a4": "Credits from bundles never expire. Subscription credits reset each billing cycle.",
+      "q5": "What payment methods are accepted?",
+      "a5": "We accept all major credit cards, debit cards, and Apple Pay through Stripe."
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "currentPlan": "Current plan",
+    "creditsPerMonth": "credits/month",
+    "upgrade": "Upgrade plan",
+    "changePlan": "Change plan",
+    "manageSubscription": "Manage subscription",
+    "creditsBalance": "Credits balance",
+    "buyCredits": "Buy more credits",
+    "couponTitle": "Redeem a coupon",
+    "couponPlaceholder": "Enter coupon code",
+    "redeem": "Redeem",
+    "discountApplied": "discount applied",
+    "transactionHistory": "Transaction history",
+    "noTransactions": "No transactions yet",
+    "checkoutSuccess": "Payment successful! Your credits have been updated.",
+    "checkoutCanceled": "Checkout was canceled. No charges were made.",
+    "txType": {
+      "signup_bonus": "Signup bonus",
+      "subscription": "Subscription credits",
+      "bundle": "Credit bundle",
+      "video_generation": "Video generation",
+      "refund": "Refund",
+      "coupon": "Coupon bonus",
+      "admin_adjustment": "Admin adjustment"
+    }
   }
 }

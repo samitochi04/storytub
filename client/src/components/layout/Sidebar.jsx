@@ -12,6 +12,7 @@ import {
   User,
 } from "lucide-react";
 import { LogoIcon } from "@/components/shared/Logo";
+import CreditDisplay from "@/components/shared/CreditDisplay";
 import { ThemeToggle } from "@/components/ui";
 
 const NAV_ITEMS = [
@@ -77,6 +78,7 @@ export default function Sidebar() {
 
       {/* Bottom nav */}
       <div className="flex flex-col items-center gap-[var(--space-4)]">
+        <CreditDisplay />
         <ThemeToggle />
         {BOTTOM_ITEMS.map((item) => (
           <SidebarLink

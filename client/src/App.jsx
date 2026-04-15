@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import { Spinner } from "@/components/ui";
 import { PublicLayout, AppShell, AdminLayout } from "@/components/layout";
@@ -147,6 +147,14 @@ export default function App() {
               <BillingPage />
             </Suspense>
           }
+        />
+        <Route
+          path="billing/success"
+          element={<Navigate to="/billing?checkout=success" replace />}
+        />
+        <Route
+          path="billing/cancel"
+          element={<Navigate to="/billing?checkout=cancel" replace />}
         />
         <Route
           path="voices"
