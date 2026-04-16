@@ -19,6 +19,7 @@ import stripeRoutes from "./routes/stripe.routes.js";
 import couponRoutes from "./routes/coupon.routes.js";
 import emailRoutes from "./routes/email.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
+import supportRoutes from "./routes/support.routes.js";
 
 export async function buildApp() {
   const app = Fastify({
@@ -90,6 +91,7 @@ export async function buildApp() {
   await app.register(couponRoutes, { prefix: "/coupons" });
   await app.register(emailRoutes, { prefix: "/admin/emails" });
   await app.register(adminRoutes, { prefix: "/admin" });
+  await app.register(supportRoutes, { prefix: "/support" });
 
   // Additional admin slices can be registered here
 

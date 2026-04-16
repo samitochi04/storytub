@@ -23,7 +23,6 @@
     "@fastify/rate-limit": "^10.2.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@ffprobe-installer/ffprobe": "^2.1.2",
-    "@google/generative-ai": "^0.24.0",
     "@supabase/supabase-js": "^2.49.4",
     "bullmq": "^5.34.8",
     "dotenv": "^16.5.0",

@@ -77,6 +77,26 @@ const DEFAULT_TEMPLATES = {
       "<p>Bonjour {{display_name}}, votre achat {{bundle_name}} a été confirmé.</p><p>{{credits_added}} crédits ont été ajoutés à votre compte.</p>",
     email_type: "transactional",
   },
+  support_ticket_created: {
+    name: "Support Ticket Created",
+    subject_en: "Your support request has been received (#{{ticket_id}})",
+    subject_fr: "Votre demande de support a bien été reçue (#{{ticket_id}})",
+    body_en:
+      "<p>Hi {{display_name}},</p><p>We received your support request: <strong>{{ticket_subject}}</strong></p><p>Our team will get back to you as soon as possible.</p><p>Ticket ID: {{ticket_id}}</p>",
+    body_fr:
+      "<p>Bonjour {{display_name}},</p><p>Nous avons bien reçu votre demande : <strong>{{ticket_subject}}</strong></p><p>Notre équipe vous répondra dans les plus brefs délais.</p><p>ID du ticket : {{ticket_id}}</p>",
+    email_type: "transactional",
+  },
+  support_ticket_admin: {
+    name: "Support Ticket Admin Notification",
+    subject_en: "New support ticket: {{ticket_subject}}",
+    subject_fr: "Nouveau ticket support : {{ticket_subject}}",
+    body_en:
+      "<p>New support ticket from <strong>{{user_email}}</strong></p><p><strong>Subject:</strong> {{ticket_subject}}</p><p><strong>Category:</strong> {{ticket_category}}</p><p><strong>Priority:</strong> {{ticket_priority}}</p><p><strong>Message:</strong></p><p>{{ticket_message}}</p><p>Ticket ID: {{ticket_id}}</p>",
+    body_fr:
+      "<p>Nouveau ticket de <strong>{{user_email}}</strong></p><p><strong>Sujet :</strong> {{ticket_subject}}</p><p><strong>Catégorie :</strong> {{ticket_category}}</p><p><strong>Priorité :</strong> {{ticket_priority}}</p><p><strong>Message :</strong></p><p>{{ticket_message}}</p><p>ID du ticket : {{ticket_id}}</p>",
+    email_type: "notification",
+  },
 };
 
 let transporter;

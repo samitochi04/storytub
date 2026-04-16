@@ -69,7 +69,7 @@ export default function Sidebar() {
     <aside
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
-      className={`hidden md:flex flex-col items-center sticky top-0 h-screen border-r border-[var(--color-border-default)] bg-[var(--color-bg-card)] py-[var(--space-4)] gap-[var(--space-4)] transition-all duration-200 ease-in-out overflow-y-auto ${
+      className={`hidden md:flex flex-col items-center fixed left-0 top-0 h-screen z-30 border-r border-[var(--color-border-default)] bg-[var(--color-bg-card)] py-[var(--space-4)] gap-[var(--space-4)] transition-all duration-200 ease-in-out overflow-y-auto ${
         expanded ? "w-[180px] px-[var(--space-3)]" : "w-[60px]"
       }`}
     >

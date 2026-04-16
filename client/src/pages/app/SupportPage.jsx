@@ -4,6 +4,7 @@ import { Plus, Send, ArrowLeft, Clock, AlertCircle } from "lucide-react";
 import SEOHead from "@/components/layout/SEOHead";
 import { Button, Input, Textarea, Select, Badge } from "@/components/ui";
 import { supabase } from "@/config/supabase";
+import { api } from "@/config/api";
 import useAuthStore from "@/stores/authStore";
 
 const CATEGORIES = [
@@ -45,29 +46,15 @@ function TicketForm({ onCreated, onCancel }) {
     setSending(true);
     setError(null);
     try {
-      const { data: ticket, error: ticketErr } = await supabase
-        .from("support_tickets")
-        .insert({
-          user_id: user.id,
-          subject: form.subject,
-          category: form.category,
-          priority: form.priority,
-        })
-        .select()
-        .single();
-      if (ticketErr) throw ticketErr;
-
-      const { error: msgErr } = await supabase.from("support_messages").insert({
-        ticket_id: ticket.id,
-        sender_id: user.id,
-        is_staff: false,
+      await api.post("/support/tickets", {
+        subject: form.subject,
+        category: form.category,
+        priority: form.priority,
         message: form.message,
       });
-      if (msgErr) throw msgErr;
-
       onCreated();
     } catch (err) {
-      setError(err.message);
+      setError(err.body?.message || err.message);
     } finally {
       setSending(false);
     }
@@ -88,7 +75,7 @@ function TicketForm({ onCreated, onCancel }) {
         <Select
           label={t("support.category")}
           value={form.category}
-          onChange={(e) => updateField("category", e.target.value)}
+          onChange={(value) => updateField("category", value)}
           options={CATEGORIES.map((c) => ({
             value: c,
             label: t(`support.cat_${c}`),
@@ -97,7 +84,7 @@ function TicketForm({ onCreated, onCancel }) {
         <Select
           label={t("support.priority")}
           value={form.priority}
-          onChange={(e) => updateField("priority", e.target.value)}
+          onChange={(value) => updateField("priority", value)}
           options={PRIORITIES.map((p) => ({
             value: p,
             label: t(`support.priority_${p}`),
@@ -148,19 +135,16 @@ function TicketThread({ ticket, onBack }) {
     e.preventDefault();
     if (!reply.trim()) return;
     setSending(true);
-    const { data, error } = await supabase
-      .from("support_messages")
-      .insert({
-        ticket_id: ticket.id,
-        sender_id: user.id,
-        is_staff: false,
+    try {
+      const data = await api.post(`/support/tickets/${ticket.id}/reply`, {
         message: reply.trim(),
-      })
-      .select()
-      .single();
-    if (!error && data) {
-      setMessages((prev) => [...prev, data]);
-      setReply("");
+      });
+      if (data) {
+        setMessages((prev) => [...prev, data]);
+        setReply("");
+      }
+    } catch {
+      // silent
     }
     setSending(false);
   }

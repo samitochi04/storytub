@@ -7,9 +7,9 @@ export default function AppShell() {
   return (
     <>
       <SEOHead noindex />
-      <div className="flex min-h-screen bg-[var(--color-bg-page)]">
+      <div className="min-h-screen bg-[var(--color-bg-page)]">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto pb-[72px] md:pb-0">
+        <main className="md:ml-[60px] flex-1 overflow-y-auto pb-[72px] md:pb-0">
           <Outlet />
         </main>
         <MobileTabBar />

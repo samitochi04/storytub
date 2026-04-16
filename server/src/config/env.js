@@ -7,7 +7,6 @@ const REQUIRED = [
   "SUPABASE_JWT_SECRET",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
-  "OPENAI_API_KEY",
 ];
 
 const missing = REQUIRED.filter((key) => !process.env[key]);
@@ -50,9 +49,10 @@ const env = Object.freeze({
     bundleStudio: process.env.STRIPE_PRICE_BUNDLE_STUDIO || "",
   },
 
-  // OpenAI
-  openaiApiKey: process.env.OPENAI_API_KEY,
-  openaiModel: process.env.OPENAI_MODEL || "gpt-4o-mini",
+  // AI (OpenAI-compatible: OpenAI, Ollama, etc.)
+  openaiApiKey: process.env.OPENAI_API_KEY || "",
+  openaiBaseUrl: process.env.OPENAI_BASE_URL || "http://127.0.0.1:11434/v1",
+  openaiModel: process.env.OPENAI_MODEL || "mistral",
 
   // Image APIs
   pixabayApiKey: process.env.PIXABAY_API_KEY || "",
