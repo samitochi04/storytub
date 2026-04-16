@@ -324,12 +324,16 @@ export async function renderVideo({
 
     const fileBuffer = await readFile(outputPath);
 
+    // Read original first scene image for preview
+    const previewBuffer = await readFile(firstImgPath);
+
     // Get accurate duration from the final rendered file
     const actualDuration = await getAudioDuration(outputPath);
 
     return {
       fileBuffer,
       thumbBuffer,
+      previewBuffer,
       durationSeconds: Math.round(actualDuration),
       fileSizeBytes: fileBuffer.length,
     };
@@ -352,6 +356,7 @@ export async function uploadToStorage(
   videoId,
   userId,
   thumbBuffer,
+  previewBuffer,
 ) {
   const path = `${userId}/${videoId}.mp4`;
 
@@ -397,6 +402,34 @@ export async function uploadToStorage(
     }
   }
 
+  // Upload preview image (full-resolution first scene)
+  let previewUrl = null;
+  if (previewBuffer) {
+    const previewPath = `${userId}/${videoId}_preview.jpg`;
+    const { error: previewErr } = await supabase.storage
+      .from("videos")
+      .upload(previewPath, previewBuffer, {
+        contentType: "image/jpeg",
+        upsert: true,
+      });
+
+    if (!previewErr) {
+      const { data: previewSigned } = await supabase.storage
+        .from("videos")
+        .createSignedUrl(previewPath, 365 * 24 * 60 * 60);
+      previewUrl = previewSigned?.signedUrl || null;
+
+      if (!previewUrl) {
+        const {
+          data: { publicUrl: previewPublic },
+        } = supabase.storage.from("videos").getPublicUrl(previewPath);
+        previewUrl = previewPublic;
+      }
+    } else {
+      logger.warn({ error: previewErr }, "Preview upload failed, skipping");
+    }
+  }
+
   const {
     data: { publicUrl },
   } = supabase.storage.from("videos").getPublicUrl(path);
@@ -406,5 +439,5 @@ export async function uploadToStorage(
     .from("videos")
     .createSignedUrl(path, 7 * 24 * 60 * 60);
 
-  return { videoUrl: signedData?.signedUrl || publicUrl, thumbnailUrl };
+  return { videoUrl: signedData?.signedUrl || publicUrl, thumbnailUrl, previewUrl };
 }

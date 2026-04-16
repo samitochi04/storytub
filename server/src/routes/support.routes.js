@@ -2,6 +2,7 @@ import supabase from "../config/supabase.js";
 import env from "../config/env.js";
 import { Errors } from "../lib/errors.js";
 import { queueTemplateEmail } from "../services/email.service.js";
+import { createNotification } from "../services/notification.service.js";
 
 const createSchema = {
   body: {
@@ -123,6 +124,13 @@ export default async function supportRoutes(app) {
           );
         }
       }
+
+      await createNotification(userId, {
+        title: "Ticket submitted",
+        message: `Your support ticket "${subject}" has been received. We will get back to you soon.`,
+        type: "info",
+        link: "/support",
+      });
 
       return reply.status(201).send(ticket);
     },

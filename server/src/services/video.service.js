@@ -7,6 +7,7 @@ import { extractAllTimestamps } from "./whisper.service.js";
 import { renderVideo, uploadToStorage } from "./render.service.js";
 import { refundCredits } from "./credit.service.js";
 import { queueTemplateEmail } from "./email.service.js";
+import { createNotification } from "./notification.service.js";
 
 /**
  * Update video status in DB.
@@ -83,17 +84,19 @@ export async function runPipeline(video) {
       language: video.language,
     });
 
-    const { videoUrl, thumbnailUrl } = await uploadToStorage(
+    const { videoUrl, thumbnailUrl, previewUrl } = await uploadToStorage(
       rendered.fileBuffer,
       videoId,
       userId ?? "guest",
       rendered.thumbBuffer,
+      rendered.previewBuffer,
     );
 
     // ── Step 7: Mark Complete ───────────────────────────────────
     await updateVideoStatus(videoId, "completed", {
       video_url: videoUrl,
       thumbnail_url: thumbnailUrl,
+      preview_url: previewUrl,
       duration_seconds: Math.round(rendered.durationSeconds),
       file_size_bytes: rendered.fileSizeBytes,
     });
@@ -115,6 +118,13 @@ export async function runPipeline(video) {
           "Failed to queue video-ready email",
         );
       }
+
+      await createNotification(userId, {
+        title: "Video ready",
+        message: `Your video "${video.title}" has been generated successfully.`,
+        type: "success",
+        link: `/videos/${videoId}`,
+      });
     }
 
     logger.info({ videoId }, "Video pipeline completed");
@@ -133,9 +143,23 @@ export async function runPipeline(video) {
           { videoId, credits: video.credits_charged },
           "Credits refunded",
         );
+
+        await createNotification(userId, {
+          title: "Video generation failed",
+          message: `Your video "${video.title}" could not be generated. ${video.credits_charged} credits have been refunded.`,
+          type: "error",
+          link: `/videos/${videoId}`,
+        });
       } catch (refundErr) {
         logger.error({ err: refundErr, videoId }, "Credit refund failed");
       }
+    } else if (userId) {
+      await createNotification(userId, {
+        title: "Video generation failed",
+        message: `Your video "${video.title}" could not be generated. Please try again later.`,
+        type: "error",
+        link: `/videos/${videoId}`,
+      });
     }
 
     throw err; // re-throw so BullMQ can retry

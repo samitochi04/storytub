@@ -119,14 +119,20 @@ export default function VideoPlayer({ src, poster }) {
       ref={containerRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => playing && setShowControls(false)}
-      className="relative overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-black shadow-[var(--shadow-md)] group"
+      className={`relative overflow-hidden rounded-[var(--radius-lg)] border border-[var(--color-border-default)] bg-black shadow-[var(--shadow-md)] group ${
+        fullscreen ? "flex items-center justify-center" : ""
+      }`}
     >
       <video
         ref={videoRef}
         src={src}
         poster={poster}
         onClick={togglePlay}
-        className="aspect-[9/16] w-full max-h-[500px] object-contain cursor-pointer"
+        className={`cursor-pointer ${
+          fullscreen
+            ? "h-full w-auto max-w-full object-contain"
+            : "aspect-[9/16] w-full max-h-[500px] object-contain"
+        }`}
         playsInline
       />
 

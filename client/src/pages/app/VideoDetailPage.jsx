@@ -179,7 +179,7 @@ export default function VideoDetailPage() {
         )}
 
         {isCompleted && video.video_url && (
-          <VideoPlayer src={video.video_url} poster={video.thumbnail_url} />
+          <VideoPlayer src={video.video_url} poster={video.preview_url || video.thumbnail_url} />
         )}
 
         {isCompleted && !video.video_url && (
